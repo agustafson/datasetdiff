@@ -1,0 +1,19 @@
+input dataset
+defines the data that can be pulled from the file, either excel or text
+does not describe conversion of the data within it.
+
+engine
+iterates through data provided by each dataset
+compares each cell
+returns result
+
+cell comparison
+general comparison: converts each cell based on each column having basic data type and then uses Ordered to run equiv
+
+cell comparator
+def compare[LC,RC](leftCell: LC, rightCell: RC): ComparisonResult
+
+cell converter[-C, -O:ClassManifest[O]]
+def convert(cell: C): Class[O]
+
+

@@ -1,0 +1,53 @@
+package org.datasetdiff
+
+/**
+ * @author: agustafson
+ */
+protected class ConvertingColumnComparator[T, L, R](convertLeft: (L => T), convertRight: (R => T), valueComparator: (T, T) => Boolean)
+extends ColumnComparator[L, R]
+{
+  def compareColumn(leftValue: Option[L], rightValue: Option[R]): ComparisonResult = {
+    val leftConvertedOption: Option[ConversionResult[T]] = convertValue(leftValue, convertLeft)
+    val rightConvertedOption: Option[ConversionResult[T]] = convertValue(rightValue, convertRight)
+
+    val comparisonResult: ComparisonResult = (leftConvertedOption,rightConvertedOption) match {
+      case (Some(SuccessfulConversionResult(leftConvertedValue)),Some(SuccessfulConversionResult(rightConvertedValue))) => {
+        if (areEqual(leftConvertedValue, rightConvertedValue)) {
+          new MatchedComparisonResult()
+        } else {
+          new UnmatchedComparisonResult(leftConvertedOption, rightConvertedOption)
+        }
+      }
+      case _ =>
+        new UnmatchedComparisonResult(leftConvertedOption, rightConvertedOption)
+    }
+    comparisonResult
+  }
+
+  private def convertValue[I](rawValue: Option[I], converter: I => T): Option[ConversionResult[T]] = {
+    try {
+      if (rawValue.isDefined) {
+        Some(SuccessfulConversionResult(converter(rawValue.get)))
+      } else {
+        None
+      }
+    }
+    catch {
+      case exception => Some(FailedConversionResult(rawValue, exception))
+    }
+  }
+
+  protected def areEqual(leftConvertedValue: T, rightConvertedValue: T): Boolean = {
+    valueComparator(leftConvertedValue, rightConvertedValue)
+  }
+}
+
+object ConvertingColumnComparator {
+  def apply[T, L, R](convertLeft: (L => T), convertRight: (R => T), valueComparator: (T, T) => Boolean) = {
+    new ConvertingColumnComparator[T, L, R](convertLeft, convertRight, valueComparator)
+  }
+
+  def apply[T, L, R](convertLeft: (L => T), convertRight: (R => T))(implicit ord: Ordering[T]) = {
+    new ConvertingColumnComparator[T, L, R](convertLeft, convertRight, (leftRaw: T, rightRaw: T) => ord.compare(leftRaw, rightRaw) == 0)
+  }
+}
