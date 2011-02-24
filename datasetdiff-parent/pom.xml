@@ -16,12 +16,13 @@
         <maven.compiler.target>1.6</maven.compiler.target>
         <encoding>UTF-8</encoding>
         <specs.artifactId>specs_${scala.version}</specs.artifactId>
+        <maven.scala.plugin.version>2.15.0</maven.scala.plugin.version>
     </properties>
 
     <scm>
-        <url>scm:git:file://localhost/Users/gus/IdeaProjects/datacomp/.git</url>
-        <connection>scm:git:file://localhost/Users/gus/IdeaProjects/datacomp/.git</connection>
-        <developerConnection>scm:git:file://localhost/Users/gus/IdeaProjects/datacomp/.git</developerConnection>
+        <connection>scm:git:git://github.com/agustafson/datasetdiff.git</connection>
+        <developerConnection>scm:git:git@github.com:agustafson/datasetdiff.git</developerConnection>
+        <url>http://github.com/agustafson/datasetdiff/tree/master</url>
     </scm>
 
     <repositories>
@@ -30,6 +31,11 @@
             <name>Scala-Tools Maven2 Repository</name>
             <url>http://scala-tools.org/repo-releases</url>
         </repository>
+        <repository>
+            <id>undercover</id>
+            <name>undercover</name>
+            <url>http://undercover.googlecode.com/svn/maven/repository</url>
+        </repository>
     </repositories>
 
     <pluginRepositories>
@@ -37,6 +43,11 @@
             <id>scala-tools.org</id>
             <name>Scala-Tools Maven2 Repository</name>
             <url>http://scala-tools.org/repo-releases</url>
+        </pluginRepository>
+        <pluginRepository>
+            <id>undercover</id>
+            <name>undercover</name>
+            <url>http://undercover.googlecode.com/svn/maven/repository</url>
         </pluginRepository>
     </pluginRepositories>
 
@@ -67,7 +78,7 @@
             <plugin>
                 <groupId>org.scala-tools</groupId>
                 <artifactId>maven-scala-plugin</artifactId>
-                <version>2.15.0</version>
+                <version>${maven.scala.plugin.version}</version>
                 <executions>
                     <execution>
                         <goals>
@@ -83,11 +94,6 @@
                     </args>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>cobertura-maven-plugin</artifactId>
-                <version>2.4</version>
-            </plugin>
         </plugins>
     </build>
 
@@ -96,13 +102,32 @@
             <plugin>
                 <groupId>org.scala-tools</groupId>
                 <artifactId>maven-scala-plugin</artifactId>
+                <version>${maven.scala.plugin.version}</version>
                 <configuration>
                     <scalaVersion>${scala.version}</scalaVersion>
                 </configuration>
             </plugin>
+            <!-- code coverage tool. -->
+            <plugin>
+                <groupId>undercover</groupId>
+                <artifactId>undercover-maven-plugin</artifactId>
+                <configuration>
+                    <includes>
+                        <include>undercover/**</include>
+                    </includes>
+                    <excludes>
+                        <exclude>undercover/ISample</exclude>
+                    </excludes>
+                    <sourceEncoding>UTF-8</sourceEncoding>
+                    <formats>
+                        <format>html</format>
+                        <format>emmaxml</format>
+                        <format>coberturaxml</format>
+                    </formats>
+                </configuration>
+            </plugin>
         </plugins>
     </reporting>
-
 
     <modules>
         <module>../datasetdiff-core</module>
