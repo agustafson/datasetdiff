@@ -5,7 +5,7 @@ package org.datasetdiff
  *
  * @author: agustafson
  */
-trait InputDataset[C]
+trait InputDataset[+C]
 {
   def extractDataRows(): Seq[Seq[C]]
 }

@@ -3,9 +3,17 @@ package org.datasetdiff
 /**
  * @author: agustafson
  */
-protected class ConvertingColumnComparator[T, L, R](convertLeft: (L => T), convertRight: (R => T), valueComparator: (T, T) => Boolean)
+class ConvertingColumnComparator[T, L, R](convertLeft: (L => T), convertRight: (R => T), valueComparator: (T, T) => Boolean)
 extends ColumnComparator[L, R]
 {
+  def this(convertLeft: (L => T), convertRight: (R => T))(implicit ord: Ordering[T]) = {
+    this(convertLeft, convertRight, (leftRaw: T, rightRaw: T) => ord.compare(leftRaw, rightRaw) == 0)
+  }
+
+  def this(convertLeft: (L => T), convertRight: (R => T), comparatorFunction: ComparatorFunction[T]) = {
+    this(convertLeft, convertRight, (leftRaw: T, rightRaw: T) => comparatorFunction.compare(leftRaw, rightRaw))
+  }
+
   def compareColumn(leftValue: Option[L], rightValue: Option[R]): ComparisonResult = {
     val leftConvertedOption: Option[ConversionResult[T]] = convertValue(leftValue, convertLeft)
     val rightConvertedOption: Option[ConversionResult[T]] = convertValue(rightValue, convertRight)
@@ -39,15 +47,5 @@ extends ColumnComparator[L, R]
 
   protected def areEqual(leftConvertedValue: T, rightConvertedValue: T): Boolean = {
     valueComparator(leftConvertedValue, rightConvertedValue)
-  }
-}
-
-object ConvertingColumnComparator {
-  def apply[T, L, R](convertLeft: (L => T), convertRight: (R => T), valueComparator: (T, T) => Boolean) = {
-    new ConvertingColumnComparator[T, L, R](convertLeft, convertRight, valueComparator)
-  }
-
-  def apply[T, L, R](convertLeft: (L => T), convertRight: (R => T))(implicit ord: Ordering[T]) = {
-    new ConvertingColumnComparator[T, L, R](convertLeft, convertRight, (leftRaw: T, rightRaw: T) => ord.compare(leftRaw, rightRaw) == 0)
   }
 }

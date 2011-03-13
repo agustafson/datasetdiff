@@ -21,17 +21,17 @@ object DatasetComparisonEngineSpecification extends Specification {
       val textFile1 = new TabDelimitedInputDataset(classLoader.getResourceAsStream(fileName1))
       val textFile2 = new TabDelimitedInputDataset(classLoader.getResourceAsStream(fileName2))
 
-      val stringConverter: (String) => String = TextColumnConverters.StringConverter
-      val numberConverter: (String) => BigDecimal = TextColumnConverters.NumberConverter
+      val stringConverter: (String) => String = TextColumnConverters.StringConverter()
+      val numberConverter: (String) => BigDecimal = TextColumnConverters.NumberConverter()
 
-      val stringColumnComparator = ConvertingColumnComparator[String, String, String](stringConverter, stringConverter)
-      val numberColumnComparator = ConvertingColumnComparator[BigDecimal, String, String](numberConverter, numberConverter)
+      val stringColumnComparator = new ConvertingColumnComparator[String, String, String](stringConverter, stringConverter)
+      val numberColumnComparator = new ConvertingColumnComparator[BigDecimal, String, String](numberConverter, numberConverter)
       
       val dateValueComparator = (left: Date, right: Date) => {
           val dateFormat = new SimpleDateFormat("yyyyMMdd")
           dateFormat.format(left) == dateFormat.format(right)
       }
-      val dateColumnComparator   = ConvertingColumnComparator[Date, String, String](
+      val dateColumnComparator   = new ConvertingColumnComparator[Date, String, String](
         TextColumnConverters.DateConverter(new SimpleDateFormat("dd/MM/yyyy hh:mm")),
         TextColumnConverters.DateConverter(new SimpleDateFormat("yyyyMMdd")),
         dateValueComparator)
@@ -59,20 +59,20 @@ object DatasetComparisonEngineSpecification extends Specification {
       val textFile = new TabDelimitedInputDataset(classLoader.getResourceAsStream(textFileName))
       val excelFile = ExcelInputDataset(classLoader.getResourceAsStream(excelFileName), 0)
 
-      val stringTextConverter: (String) => String = TextColumnConverters.StringConverter
-      val numberTextConverter: (String) => BigDecimal = TextColumnConverters.NumberConverter
+      val stringTextConverter: (String) => String = TextColumnConverters.StringConverter()
+      val numberTextConverter: (String) => BigDecimal = TextColumnConverters.NumberConverter()
       val stringExcelConverter: (HSSFCell) => String = ExcelColumnConverter.String
       val numberExcelConverter: (HSSFCell) => BigDecimal = ExcelColumnConverter.Number
 
-      val stringColumnComparator = ConvertingColumnComparator[String, String, HSSFCell](stringTextConverter, stringExcelConverter)
-      val numberColumnComparator = ConvertingColumnComparator[BigDecimal, String, HSSFCell](numberTextConverter, numberExcelConverter)
+      val stringColumnComparator = new ConvertingColumnComparator[String, String, HSSFCell](stringTextConverter, stringExcelConverter)
+      val numberColumnComparator = new ConvertingColumnComparator[BigDecimal, String, HSSFCell](numberTextConverter, numberExcelConverter)
 
       val dateValueComparator = (left: Date, right: Date) => {
           val dateFormat = new SimpleDateFormat("yyyyMMdd")
           dateFormat.format(left) == dateFormat.format(right)
       }
       val dateFormat: SimpleDateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm")
-      val dateColumnComparator   = ConvertingColumnComparator[Date, String, HSSFCell](
+      val dateColumnComparator = new ConvertingColumnComparator[Date, String, HSSFCell](
         TextColumnConverters.DateConverter(dateFormat),
         ExcelColumnConverter.Date,
         dateValueComparator)

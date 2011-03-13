@@ -5,7 +5,7 @@ import org.apache.poi.hssf.usermodel.{HSSFCell, HSSFRow, HSSFSheet, HSSFWorkbook
 import java.io.{ByteArrayInputStream, ByteArrayOutputStream}
 
 /**
- * @author: Andrew Gustafson
+ * @author: agustafson
  */
 object ExcelInputDatasetSpecification extends Specification {
   "ExcelInputDataset" should {

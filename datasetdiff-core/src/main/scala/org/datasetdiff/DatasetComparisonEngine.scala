@@ -5,9 +5,13 @@ import collection.mutable.ListBuffer
 /**
  * @author: agustafson
  */
-class DatasetComparisonEngine[L,R](columnComparators: Map[Int, ColumnComparator[L,R]], defaultColumnComparator: ColumnComparator[L,R] = ColumnComparator.default[L,R]()) {
+class DatasetComparisonEngine[L,R](columnComparators: Map[Int, ColumnComparator[L,R]], defaultColumnComparator: ColumnComparator[L,R]) {
 
-  def compareDatasets(leftDataset: InputDataset[L], rightDataset: InputDataset[R]): List[Array[ComparisonResult]] = {
+  def this(columnComparators: Map[Int, ColumnComparator[L,R]]) = {
+    this(columnComparators, ColumnComparator.defaultComparator[L,R]())
+  }
+
+  def compareDatasets[DL <: InputDataset[L], DR <: InputDataset[R]](leftDataset: DL, rightDataset: DR): List[Array[ComparisonResult]] = {
     val leftRows: Seq[Seq[L]] = leftDataset.extractDataRows
     val rightRows: Seq[Seq[R]] = rightDataset.extractDataRows
 
