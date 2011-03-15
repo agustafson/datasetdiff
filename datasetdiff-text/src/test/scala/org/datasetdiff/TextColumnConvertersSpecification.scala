@@ -3,8 +3,8 @@ package org.datasetdiff
 import org.datasetdiff.TextColumnConverters._
 import org.specs.runner.JUnit4
 import org.specs.{ScalaCheck, Specification}
-import java.text.SimpleDateFormat
 import java.util.Date
+import java.text.SimpleDateFormat
 
 /**
  * @author: agustafson
@@ -35,11 +35,11 @@ object TextColumnConvertersSpecification extends Specification with ScalaCheck {
   "DateConverter" verifies {
     (date: Date) => {
       if (date.getYear < 99999) {
-        val dateFormat = new SimpleDateFormat("dd/MM/yyyy kk:mm:ss.SSS")
-        val dateConverter = DateConverter(dateFormat)
-        val dateString = dateFormat.format(date)
+        val datePattern = "dd/MM/yyyy kk:mm:ss.SSS"
+        val dateString = new SimpleDateFormat(datePattern).format(date)
+        val dateConverter = DateConverter(datePattern)
         val convertedDate = dateConverter(dateString)
-        (convertedDate compareTo date) == 0
+        new DateMatcher(datePattern, convertedDate).matches(date)
       } else {
         true
       }

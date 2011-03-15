@@ -1,7 +1,7 @@
 package org.datasetdiff
 
 import java.util.Date
-import java.text.DateFormat
+import java.text.SimpleDateFormat
 
 /**
  * Text columns converters.
@@ -11,7 +11,7 @@ import java.text.DateFormat
 object TextColumnConverters {
   def BooleanConverter(): (String => Boolean) = ((cell: String) => cell.toBoolean)
 
-  def DateConverter(dateFormat: DateFormat = DateFormat.getInstance()): (String => Date) = ((cell: String) => dateFormat.parse(cell))
+  def DateConverter(datePattern: String): (String => Date) = ((cell: String) => new SimpleDateFormat(datePattern).parse(cell))
 
   def NumberConverter(): (String => BigDecimal) = ((cell: String) => BigDecimal.apply(cell))
 

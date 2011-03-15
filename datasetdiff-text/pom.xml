@@ -20,6 +20,13 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
+            <groupId>org.datasetcomp</groupId>
+            <artifactId>datasetdiff-core</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+            <classifier>tests</classifier>
+        </dependency>
+        <dependency>
             <groupId>net.sourceforge.javacsv</groupId>
             <artifactId>javacsv</artifactId>
             <version>2.0</version>

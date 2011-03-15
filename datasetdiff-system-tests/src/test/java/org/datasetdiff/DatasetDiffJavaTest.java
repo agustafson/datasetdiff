@@ -27,8 +27,8 @@ public class DatasetDiffJavaTest {
 
         Function1 stringConverter = TextColumnConverters.StringConverter();
         Function1 numberConverter = TextColumnConverters.NumberConverter();
-        Function1 dateConverterDDMMYYYY = TextColumnConverters.DateConverter(new SimpleDateFormat("dd/MM/yyyy hh:mm"));
-        Function1 dateConverterYYYYMMDD = TextColumnConverters.DateConverter(new SimpleDateFormat("yyyyMMdd"));
+        Function1 dateConverterDDMMYYYY = TextColumnConverters.DateConverter("dd/MM/yyyy hh:mm");
+        Function1 dateConverterYYYYMMDD = TextColumnConverters.DateConverter("yyyyMMdd");
 
         ComparatorFunction<String> stringComparator = new ComparatorFunction<String>() {
             @Override

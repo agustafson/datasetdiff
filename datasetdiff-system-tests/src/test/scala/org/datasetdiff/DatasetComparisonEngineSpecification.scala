@@ -2,7 +2,6 @@ package org.datasetdiff
 
 import org.specs.Specification
 import org.specs.runner.JUnit4
-import java.text.SimpleDateFormat
 import java.util.Date
 import org.apache.poi.hssf.usermodel.HSSFCell
 
@@ -27,13 +26,10 @@ object DatasetComparisonEngineSpecification extends Specification {
       val stringColumnComparator = new ConvertingColumnComparator[String, String, String](stringConverter, stringConverter)
       val numberColumnComparator = new ConvertingColumnComparator[BigDecimal, String, String](numberConverter, numberConverter)
       
-      val dateValueComparator = (left: Date, right: Date) => {
-          val dateFormat = new SimpleDateFormat("yyyyMMdd")
-          dateFormat.format(left) == dateFormat.format(right)
-      }
+      val dateValueComparator = (left: Date, right: Date) => new DateMatcher("yyyyMMdd", left).matches(right)
       val dateColumnComparator   = new ConvertingColumnComparator[Date, String, String](
-        TextColumnConverters.DateConverter(new SimpleDateFormat("dd/MM/yyyy hh:mm")),
-        TextColumnConverters.DateConverter(new SimpleDateFormat("yyyyMMdd")),
+        TextColumnConverters.DateConverter("dd/MM/yyyy hh:mm"),
+        TextColumnConverters.DateConverter("yyyyMMdd"),
         dateValueComparator)
 
       val columnComparators = Map(
@@ -67,13 +63,9 @@ object DatasetComparisonEngineSpecification extends Specification {
       val stringColumnComparator = new ConvertingColumnComparator[String, String, HSSFCell](stringTextConverter, stringExcelConverter)
       val numberColumnComparator = new ConvertingColumnComparator[BigDecimal, String, HSSFCell](numberTextConverter, numberExcelConverter)
 
-      val dateValueComparator = (left: Date, right: Date) => {
-          val dateFormat = new SimpleDateFormat("yyyyMMdd")
-          dateFormat.format(left) == dateFormat.format(right)
-      }
-      val dateFormat: SimpleDateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm")
+      val dateValueComparator = (left: Date, right: Date) => new DateMatcher("yyyyMMdd", left).matches(right)
       val dateColumnComparator = new ConvertingColumnComparator[Date, String, HSSFCell](
-        TextColumnConverters.DateConverter(dateFormat),
+        TextColumnConverters.DateConverter("dd/MM/yyyy hh:mm"),
         ExcelColumnConverter.Date,
         dateValueComparator)
 
