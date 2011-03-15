@@ -16,7 +16,6 @@ class TabDelimitedInputDatasetTest extends JUnit4(TabDelimitedInputDatasetSpecif
 object TabDelimitedInputDatasetSpecification extends Specification {
   "A tab delimited parser" should {
     "import a dataset" in {
-      println("import a dataset")
       val input: String = "a\tb\tc\n" + "d\te\tf"
       val inputStream: ByteArrayInputStream = new ByteArrayInputStream(input.getBytes())
       val inputDataset: TabDelimitedInputDataset = new TabDelimitedInputDataset(inputStream)
