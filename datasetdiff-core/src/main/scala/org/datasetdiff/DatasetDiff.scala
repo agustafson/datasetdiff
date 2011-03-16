@@ -5,7 +5,7 @@ import collection.mutable.ListBuffer
 /**
  * @author: agustafson
  */
-class DatasetComparisonEngine[L,R](columnComparators: Map[Int, ColumnComparator[L,R]], defaultColumnComparator: ColumnComparator[L,R]) {
+class DatasetDiff[L,R](columnComparators: Map[Int, ColumnComparator[L,R]], defaultColumnComparator: ColumnComparator[L,R]) {
 
   def this(columnComparators: Map[Int, ColumnComparator[L,R]]) = {
     this(columnComparators, ColumnComparator.defaultComparator[L,R]())

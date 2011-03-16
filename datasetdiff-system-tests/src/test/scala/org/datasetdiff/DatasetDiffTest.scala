@@ -5,13 +5,13 @@ import org.specs.runner.JUnit4
 import java.util.Date
 import org.apache.poi.hssf.usermodel.HSSFCell
 
-class DatasetComparisonEngineSpecification extends JUnit4(DatasetComparisonEngineSpecification)
+class DatasetDiffTest extends JUnit4(DatasetDiffTest)
 
 /**
  * @author: agustafson
  */
-object DatasetComparisonEngineSpecification extends Specification {
-  "datacomp" should {
+object DatasetDiffTest extends Specification {
+  "DatasetDiff" should {
     "compare 2 simple text files successfully" in {
       val classLoader: ClassLoader = this.getClass.getClassLoader
 
@@ -38,7 +38,7 @@ object DatasetComparisonEngineSpecification extends Specification {
         2 -> dateColumnComparator
       )
 
-      val engine = new DatasetComparisonEngine[String,String](columnComparators)
+      val engine = new DatasetDiff[String,String](columnComparators)
 
       val comparisons: List[Array[ComparisonResult]] = engine.compareDatasets(textFile1, textFile2)
       comparisons.length mustBe 3
@@ -75,7 +75,7 @@ object DatasetComparisonEngineSpecification extends Specification {
         2 -> dateColumnComparator
       )
 
-      val engine = new DatasetComparisonEngine[String,HSSFCell](columnComparators)
+      val engine = new DatasetDiff[String,HSSFCell](columnComparators)
 
       val comparisons: List[Array[ComparisonResult]] = engine.compareDatasets(textFile, excelFile)
       comparisons.length mustBe 3
