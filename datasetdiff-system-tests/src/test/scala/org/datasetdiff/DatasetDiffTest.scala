@@ -38,9 +38,9 @@ object DatasetDiffTest extends Specification {
         2 -> dateColumnComparator
       )
 
-      val engine = new DatasetDiff[String,String](columnComparators)
+      val datasetDiff = new DatasetDiff[String,String](columnComparators)
 
-      val comparisons: List[Array[ComparisonResult]] = engine.compareDatasets(textFile1, textFile2)
+      val comparisons: List[Array[ComparisonResult]] = datasetDiff.compareDatasets(textFile1, textFile2)
       comparisons.length mustBe 3
       for (rowComparison <- comparisons; cellComparison <- rowComparison) {
         cellComparison must(haveClass[MatchedComparisonResult])
@@ -75,9 +75,9 @@ object DatasetDiffTest extends Specification {
         2 -> dateColumnComparator
       )
 
-      val engine = new DatasetDiff[String,HSSFCell](columnComparators)
+      val datasetDiff = new DatasetDiff[String,HSSFCell](columnComparators)
 
-      val comparisons: List[Array[ComparisonResult]] = engine.compareDatasets(textFile, excelFile)
+      val comparisons: List[Array[ComparisonResult]] = datasetDiff.compareDatasets(textFile, excelFile)
       comparisons.length mustBe 3
       for (rowComparison <- comparisons; cellComparison <- rowComparison) {
         cellComparison must(haveClass[MatchedComparisonResult])
