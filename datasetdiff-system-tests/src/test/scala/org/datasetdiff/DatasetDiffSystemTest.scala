@@ -5,12 +5,12 @@ import org.specs.runner.JUnit4
 import java.util.Date
 import org.apache.poi.hssf.usermodel.HSSFCell
 
-class DatasetDiffTest extends JUnit4(DatasetDiffTest)
+class DatasetDiffSystemTest extends JUnit4(DatasetDiffSystemTest)
 
 /**
  * @author: agustafson
  */
-object DatasetDiffTest extends Specification {
+object DatasetDiffSystemTest extends Specification {
   "DatasetDiff" should {
     "compare 2 simple text files successfully" in {
       val classLoader: ClassLoader = this.getClass.getClassLoader
