@@ -7,7 +7,7 @@ import java.lang.String
 import java.io.InputStream
 
 /**
- * @author: agustafson
+ * @author agustafson
  */
 abstract class AbstractTextInputDataset(private val inputStream: InputStream)
   extends InputDataset[String]

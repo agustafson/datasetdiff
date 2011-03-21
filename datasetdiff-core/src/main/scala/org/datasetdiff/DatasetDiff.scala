@@ -3,7 +3,7 @@ package org.datasetdiff
 import collection.mutable.ListBuffer
 
 /**
- * @author: agustafson
+ * @author agustafson
  */
 class DatasetDiff[L,R](columnComparators: Map[Int, ColumnComparator[L,R]], defaultColumnComparator: ColumnComparator[L,R]) {
 

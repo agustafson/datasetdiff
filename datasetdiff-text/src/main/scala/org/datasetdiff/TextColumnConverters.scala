@@ -6,7 +6,7 @@ import java.text.SimpleDateFormat
 /**
  * Text columns converters.
  *
- * @author: agustafson
+ * @author agustafson
  */
 object TextColumnConverters {
   def BooleanConverter(): (String => Boolean) = ((cell: String) => cell.toBoolean)

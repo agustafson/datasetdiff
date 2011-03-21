@@ -1,7 +1,7 @@
 package org.datasetdiff
 
 /**
- * @author: agustafson
+ * @author agustafson
  */
 class ConvertingColumnComparator[T, L, R](convertLeft: (L => T), convertRight: (R => T), valueComparator: (T, T) => Boolean)
 extends ColumnComparator[L, R]

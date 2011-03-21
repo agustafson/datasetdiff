@@ -3,7 +3,7 @@ package org.datasetdiff
 /**
  * Input data set, representing a list of rows.
  *
- * @author: agustafson
+ * @author agustafson
  */
 trait InputDataset[+C]
 {

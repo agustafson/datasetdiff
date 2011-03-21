@@ -5,7 +5,7 @@ import scalaj.collection.Imports._
 /**
  * Builder for comparing datasets.
  *
- * @author: agustafson
+ * @author agustafson
  */
 class DatasetDiffBuilder[L,R] {
 

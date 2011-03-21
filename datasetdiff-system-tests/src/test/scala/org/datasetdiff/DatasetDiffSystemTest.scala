@@ -8,7 +8,7 @@ import org.apache.poi.hssf.usermodel.HSSFCell
 class DatasetDiffSystemTest extends JUnit4(DatasetDiffSystemTest)
 
 /**
- * @author: agustafson
+ * @author agustafson
  */
 object DatasetDiffSystemTest extends Specification {
   "DatasetDiff" should {

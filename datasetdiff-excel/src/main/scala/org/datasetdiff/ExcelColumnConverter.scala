@@ -6,7 +6,7 @@ import org.apache.poi.hssf.usermodel.HSSFCell
 /**
  * {@linkplain ColumnConverter} for excel files.
  *
- * @author: agustafson
+ * @author agustafson
  */
 trait ExcelColumnConverter[O] extends ColumnConverter[HSSFCell, O]
 

@@ -7,13 +7,14 @@ import java.util.List;
 import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Test;
+
 import scala.Function1;
 import scala.math.BigDecimal;
 
 /**
  * Test to check compatibility from java.
  *
- * @author: agustafson
+ * @author agustafson
  */
 public class DatasetDiffJavaTest {
     @Test

@@ -3,7 +3,7 @@ package org.datasetdiff;
 /**
  * Function which can convert one value to another.
  *
- * @author: agustafson
+ * @author agustafson
  *
  * @param <I> Input type
  * @param <O> Output type; result of the conversion

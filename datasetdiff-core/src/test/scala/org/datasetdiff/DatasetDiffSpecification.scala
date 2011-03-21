@@ -7,7 +7,7 @@ import org.specs.runner.JUnit4
 /**
  * Specification for DatasetDiff.
  *
- * @author: agustafson
+ * @author agustafson
  */
 class DatasetDiffTest extends JUnit4(DatasetDiffSpecification)
 

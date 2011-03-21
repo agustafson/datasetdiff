@@ -7,7 +7,7 @@ import java.lang.String
 /**
  * Tests for ConvertingColumnComparator.
  *
- * @author: agustafson
+ * @author agustafson
  */
 class ConvertingColumnComparatorTest extends JUnit4(ConvertingColumnComparatorSpecification)
 

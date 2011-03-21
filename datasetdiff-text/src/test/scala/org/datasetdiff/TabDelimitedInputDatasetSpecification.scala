@@ -9,7 +9,7 @@ import org.specs.runner.JUnit4
 import org.specs.Specification
 
 /**
- * @author: agustafson
+ * @author agustafson
  */
 class TabDelimitedInputDatasetTest extends JUnit4(TabDelimitedInputDatasetSpecification)
 

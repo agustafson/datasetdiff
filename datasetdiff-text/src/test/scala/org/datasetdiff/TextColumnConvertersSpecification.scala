@@ -7,7 +7,7 @@ import java.util.Date
 import java.text.SimpleDateFormat
 
 /**
- * @author: agustafson
+ * @author agustafson
  */
 class TextColumnConvertersTest extends JUnit4(TextColumnConvertersSpecification)
 

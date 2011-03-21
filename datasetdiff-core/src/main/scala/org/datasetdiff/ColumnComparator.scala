@@ -3,7 +3,7 @@ package org.datasetdiff
 /**
  * Column comparator: compare left and right values and return a ComparisonResult.
  *
- * @author: agustafson
+ * @author agustafson
  */
 trait ColumnComparator[L,R] {
   /**

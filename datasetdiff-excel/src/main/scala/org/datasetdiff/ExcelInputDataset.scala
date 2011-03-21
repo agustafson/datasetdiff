@@ -7,7 +7,7 @@ import org.apache.poi.hssf.usermodel.{HSSFSheet, HSSFCell, HSSFWorkbook}
 import collection.JavaConversions.JIteratorWrapper
 
 /**
- * @author: agustafson
+ * @author agustafson
  */
 protected abstract class ExcelInputDataset(private val inputStream: InputStream)
   extends InputDataset[HSSFCell]

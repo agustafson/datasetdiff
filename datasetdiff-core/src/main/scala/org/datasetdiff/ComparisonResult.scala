@@ -1,7 +1,7 @@
 package org.datasetdiff
 
 /**
- * @author: agustafson
+ * @author agustafson
  */
 sealed abstract class ComparisonResult() {
   val isMatched: Boolean

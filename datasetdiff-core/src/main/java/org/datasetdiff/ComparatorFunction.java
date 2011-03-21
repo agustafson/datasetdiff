@@ -3,7 +3,7 @@ package org.datasetdiff;
 /**
  * Function which can compare 2 values.
  *
- * @author: agustafson
+ * @author agustafson
  *
  * @param <T> The type to be compared
  */

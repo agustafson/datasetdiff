@@ -7,7 +7,7 @@ import java.text.SimpleDateFormat
 /**
  * Hamcrest matcher for {@linkplain Date}s.
  *
- * @author: agustafson
+ * @author agustafson
  */
 class DateMatcher(datePattern: String, date: Date) extends TypeSafeMatcher[Date] {
   def this(date: Date) = {
