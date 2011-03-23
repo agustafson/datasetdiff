@@ -10,13 +10,4 @@
         <relativePath>../datasetdiff-parent</relativePath>
     </parent>
 
-    <dependencies>
-        <!-- allows for easier access form java -->
-        <dependency>
-            <groupId>org.scalaj</groupId>
-            <artifactId>scalaj-collection_2.8.0</artifactId>
-            <version>1.0</version>
-        </dependency>
-    </dependencies>
-
 </project>

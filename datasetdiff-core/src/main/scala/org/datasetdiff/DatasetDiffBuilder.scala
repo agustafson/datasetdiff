@@ -1,6 +1,6 @@
 package org.datasetdiff
 
-import scalaj.collection.Imports._
+import scala.collection.JavaConversions._
 
 /**
  * Builder for comparing datasets.
@@ -26,6 +26,6 @@ class DatasetDiffBuilder[L,R] {
   def compare[DL <: InputDataset[L], DR <: InputDataset[R]](leftDataset: DL, rightDataset: DR): java.util.List[Array[ComparisonResult]] = {
     val datasetDiff: DatasetDiff[L, R] = new DatasetDiff[L, R](columnComparators.toMap, defaultColumnComparator)
     val comparisonResults: List[Array[ComparisonResult]] = datasetDiff.compareDatasets[DL, DR](leftDataset, rightDataset)
-    comparisonResults.asJava[Array[ComparisonResult]];
+    asJavaList[Array[ComparisonResult]](comparisonResults)
   }
 }
