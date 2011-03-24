@@ -191,6 +191,7 @@
         <module>../datasetdiff-core</module>
         <module>../datasetdiff-text</module>
         <module>../datasetdiff-excel</module>
+        <module>../datasetdiff-jdbc</module>
         <module>../datasetdiff-system-tests</module>
     </modules>
 
