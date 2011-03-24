@@ -6,8 +6,3 @@ Default converter or stacked converter for each column.
 On error: fails comparison. 
 
 CellConverter can convert from cell to an instance of a datatype.
-Have map of converters.
-
-
-PROCESS:
-1) 
