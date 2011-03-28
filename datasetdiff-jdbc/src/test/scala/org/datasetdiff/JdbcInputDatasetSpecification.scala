@@ -28,11 +28,17 @@ object JdbcInputDatasetSpecification extends Specification {
       connection.close
     }
     // shutdown
+    var gotSQLExc = false;
     try {
-      DriverManager.getConnection(baseConnectionUrl + ";shutdown=true")
+       DriverManager.getConnection("jdbc:derby:;shutdown=true");
+    } catch {
+      case se: SQLException =>
+        if (se.getSQLState().equals("XJ015")) {
+          gotSQLExc = true;
+        }
     }
-    catch {
-      case e: Exception => println("Error throwing " + e.getMessage)
+    if (!gotSQLExc) {
+       System.out.println("Database did not shut down normally");
     }
   }
 
