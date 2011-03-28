@@ -1,10 +1,9 @@
 package org.datasetdiff
 
 import scala.io.Source
-import scala.collection.mutable.ListBuffer
-
 import java.lang.String
 import java.io.InputStream
+import org.apache.commons.io.LineIterator
 
 /**
  * @author agustafson
@@ -12,14 +11,13 @@ import java.io.InputStream
 abstract class AbstractTextInputDataset(private val inputStream: InputStream)
   extends InputDataset[String]
 {
-  lazy val extractDataRows: List[Seq[String]] = {
-    val source = Source.fromInputStream(inputStream)
+  lazy val extractDataRows: Iterator[Seq[String]] = {
+    val lineIterator: LineIterator = new LineIterator(Source.fromInputStream(inputStream).bufferedReader)
 
-    val buffer = ListBuffer[Seq[String]]()
-    for (line <- source.getLines) {
-      buffer += splitLine(line)
+    new Iterator[Seq[String]] {
+      def next(): Seq[String] = splitLine(lineIterator.next)
+      def hasNext: Boolean = lineIterator.hasNext
     }
-    buffer.toList
   }
 
   protected def splitLine(line: String): List[String]

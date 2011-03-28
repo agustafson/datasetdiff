@@ -27,13 +27,13 @@ object DatasetDiffSpecification extends Specification with Mockito {
       )
 
       val leftDataset = mock[InputDataset[String]]
-      leftDataset.extractDataRows returns Seq(
+      leftDataset.extractDataRows returns Iterator(
         Seq("1", "a"),
         Seq("2", "b"),
         Seq("3", "c")
       )
       val rightDataset = mock[InputDataset[String]]
-      rightDataset.extractDataRows returns Seq(
+      rightDataset.extractDataRows returns Iterator(
         Seq("1", "A"),
         Seq("2", "B"),
         Seq("3", "C")
