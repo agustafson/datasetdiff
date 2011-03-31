@@ -16,18 +16,18 @@ object JdbcInputDatasetSpecification extends Specification {
   val jdbcExecutor = new JdbcExecutor(baseConnectionUrl + ";create=true")
 
   doBeforeSpec {
-    jdbcExecutor.execute("CREATE TABLE TEST (ID INT, DESCRIPTION VARCHAR(255))")
+    jdbcExecutor.executeUpdate("CREATE TABLE TEST (ID INT, DESCRIPTION VARCHAR(255))")
   }
 
   doAfterSpec {
     jdbcExecutor.ignore {
-      () => jdbcExecutor.execute("DROP TABLE TEST")
+      () => jdbcExecutor.executeUpdate("DROP TABLE TEST")
     }
     jdbcExecutor.close
     // shutdown
     var gotSQLExc = false;
     try {
-       DriverManager.getConnection("jdbc:derby:;shutdown=true");
+      DriverManager.getConnection("jdbc:derby:;shutdown=true");
     } catch {
       case se: SQLException =>
         if (se.getSQLState().equals("XJ015")) {
@@ -35,23 +35,24 @@ object JdbcInputDatasetSpecification extends Specification {
         }
     }
     if (!gotSQLExc) {
-       System.out.println("Database did not shut down normally");
+      System.out.println("Database did not shut down normally");
     }
   }
 
   "JdbcInputDataset" should {
     "extract a simple dataset" in {
-      jdbcExecutor.execute("INSERT INTO TEST (ID, DESCRIPTION) VALUES (1,'a')")
-      jdbcExecutor.execute("INSERT INTO TEST (ID, DESCRIPTION) VALUES (2,'b')")
-      jdbcExecutor.withStatement((statement: Statement) => {
-        val resultSet = statement.executeQuery("SELECT * FROM TEST")
+      val insertSql = "INSERT INTO TEST (ID, DESCRIPTION) VALUES (?,?)"
+      jdbcExecutor.executeUpdate(insertSql, 1, "a")
+      jdbcExecutor.executeUpdate(insertSql, 2, "b")
+      jdbcExecutor.executeQuery("SELECT * FROM TEST") {
+        (resultSet: ResultSet) => {
+          val jdbcInputDataset: JdbcInputDataset = new JdbcInputDataset(resultSet)
+          val results = jdbcInputDataset.extractDataRows()
 
-        val jdbcInputDataset: JdbcInputDataset = new JdbcInputDataset(resultSet)
-        val results = jdbcInputDataset.extractDataRows()
-
-        val expectedResults = List(Seq(1, "a"), Seq(2, "b"))
-        results.toList must haveTheSameElementsAs(expectedResults)
-      })
+          val expectedResults = List(Seq(1, "a"), Seq(2, "b"))
+          results.toList must haveTheSameElementsAs(expectedResults)
+        }
+      }
     }
   }
 }
