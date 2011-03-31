@@ -16,13 +16,13 @@ object JdbcInputDatasetSpecification extends Specification {
   val jdbcExecutor = new JdbcExecutor(baseConnectionUrl + ";create=true")
 
   doBeforeSpec {
-    jdbcExecutor.ignore {
-      () => jdbcExecutor.execute("DROP TABLE TEST")
-    }
     jdbcExecutor.execute("CREATE TABLE TEST (ID INT, DESCRIPTION VARCHAR(255))")
   }
 
   doAfterSpec {
+    jdbcExecutor.ignore {
+      () => jdbcExecutor.execute("DROP TABLE TEST")
+    }
     jdbcExecutor.close
     // shutdown
     var gotSQLExc = false;
