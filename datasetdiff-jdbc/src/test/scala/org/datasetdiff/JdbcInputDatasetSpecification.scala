@@ -11,7 +11,6 @@ import java.sql._
 class JdbcInputDatasetTest extends JUnit4(JdbcInputDatasetSpecification)
 
 object JdbcInputDatasetSpecification extends Specification {
-  val driver: String = "org.apache.derby.jdbc.EmbeddedDriver";
   val databaseName: String = "jdbcTest";
   val baseConnectionUrl: String = "jdbc:derby:" + databaseName
   val jdbcExecutor = new JdbcExecutor(baseConnectionUrl + ";create=true")
