@@ -14,19 +14,17 @@ object JdbcInputDatasetSpecification extends Specification {
   val driver: String = "org.apache.derby.jdbc.EmbeddedDriver";
   val databaseName: String = "jdbcTest";
   val baseConnectionUrl: String = "jdbc:derby:" + databaseName
-  var connection = DriverManager.getConnection(baseConnectionUrl + ";create=true")
+  val jdbcExecutor = new JdbcExecutor(baseConnectionUrl + ";create=true")
 
   doBeforeSpec {
-    ignore {
-      () => execute("DROP TABLE TEST")
+    jdbcExecutor.ignore {
+      () => jdbcExecutor.execute("DROP TABLE TEST")
     }
-    execute("CREATE TABLE TEST (ID INT, DESCRIPTION VARCHAR(255))")
+    jdbcExecutor.execute("CREATE TABLE TEST (ID INT, DESCRIPTION VARCHAR(255))")
   }
 
   doAfterSpec {
-    ignore {
-      connection.close
-    }
+    jdbcExecutor.close
     // shutdown
     var gotSQLExc = false;
     try {
@@ -44,9 +42,9 @@ object JdbcInputDatasetSpecification extends Specification {
 
   "JdbcInputDataset" should {
     "extract a simple dataset" in {
-      execute("INSERT INTO TEST (ID, DESCRIPTION) VALUES (1,'a')")
-      execute("INSERT INTO TEST (ID, DESCRIPTION) VALUES (2,'b')")
-      withStatement((statement: Statement) => {
+      jdbcExecutor.execute("INSERT INTO TEST (ID, DESCRIPTION) VALUES (1,'a')")
+      jdbcExecutor.execute("INSERT INTO TEST (ID, DESCRIPTION) VALUES (2,'b')")
+      jdbcExecutor.withStatement((statement: Statement) => {
         val resultSet = statement.executeQuery("SELECT * FROM TEST")
 
         val jdbcInputDataset: JdbcInputDataset = new JdbcInputDataset(resultSet)
@@ -55,37 +53,6 @@ object JdbcInputDatasetSpecification extends Specification {
         val expectedResults = List(Seq(1, "a"), Seq(2, "b"))
         results.toList must haveTheSameElementsAs(expectedResults)
       })
-    }
-  }
-
-  def execute(sql: String): Boolean = {
-    withStatement((statement: Statement) => {
-      statement.execute(sql)
-    })
-  }
-
-  def executeQuery(sql: String): ResultSet = {
-    withStatement((statement: Statement) => {
-      statement.executeQuery(sql)
-    })
-  }
-
-  def withStatement[O](f: Statement => O): O = {
-    val statement: Statement = connection.createStatement
-    try {
-      f(statement)
-    }
-    finally {
-      statement.close
-    }
-  }
-
-  def ignore[O](f: () => O): Option[O] = {
-    try {
-      Some(f())
-    }
-    catch {
-      case _ => None
     }
   }
 }
