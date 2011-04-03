@@ -26,6 +26,8 @@ extends ColumnComparator[L, R]
           new UnmatchedComparisonResult(leftConvertedOption, rightConvertedOption)
         }
       }
+      case (None, None) =>
+        new MatchedComparisonResult()
       case _ =>
         new UnmatchedComparisonResult(leftConvertedOption, rightConvertedOption)
     }
@@ -34,7 +36,7 @@ extends ColumnComparator[L, R]
 
   private def convertValue[I](rawValue: Option[I], converter: I => T): Option[ConversionResult[T]] = {
     try {
-      if (rawValue.isDefined) {
+      if (rawValue.isDefined && rawValue.get != null) {
         Some(SuccessfulConversionResult(converter(rawValue.get)))
       } else {
         None

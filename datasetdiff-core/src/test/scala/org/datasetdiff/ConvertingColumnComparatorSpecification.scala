@@ -20,6 +20,7 @@ object ConvertingColumnComparatorSpecification extends Specification {
         new ConvertingColumnComparator[Int, String, String](string2IntConverter, string2IntConverter)
 
       columnComparator.compareColumn(Some("3"), Some("3")) must haveClass[MatchedComparisonResult]
+      columnComparator.compareColumn(None, None) must haveClass[MatchedComparisonResult]
       columnComparator.compareColumn(Some("3"), Some("2")) must haveClass[UnmatchedComparisonResult[_]]
       columnComparator.compareColumn(Some("3"), None) must haveClass[UnmatchedComparisonResult[_]]
     }
