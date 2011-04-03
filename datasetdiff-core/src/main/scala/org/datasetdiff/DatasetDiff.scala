@@ -12,17 +12,15 @@ class DatasetDiff[L,R](columnComparators: Map[Int, ColumnComparator[L,R]], defau
   }
 
   def compareDatasets[DL <: InputDataset[L], DR <: InputDataset[R]](leftDataset: DL, rightDataset: DR): List[Array[ComparisonResult]] = {
-    val leftRows: Iterator[Seq[L]] = leftDataset.extractDataRows
-    val rightRows: Iterator[Seq[R]] = rightDataset.extractDataRows
-
-    val numberOfRows: Int = scala.math.max(leftRows.size, rightRows.size)
+    val leftRows: Iterator[Seq[L]] = leftDataset.extractDataRows()
+    val rightRows: Iterator[Seq[R]] = rightDataset.extractDataRows()
 
     val rowComparisonResults = new ListBuffer[Array[ComparisonResult]]()
 
     // scroll through each of the rows from both sources
     while (leftRows.hasNext || rightRows.hasNext) {
-      val leftRow: Seq[L] = leftRows.next
-      val rightRow: Seq[R] = rightRows.next
+      val leftRow: Seq[L] = leftRows.next()
+      val rightRow: Seq[R] = rightRows.next()
 
       val numberOfColumns: Int = scala.math.max(leftRow.size, rightRow.size)
       val rowComparison = Array.ofDim[ComparisonResult](numberOfColumns)
