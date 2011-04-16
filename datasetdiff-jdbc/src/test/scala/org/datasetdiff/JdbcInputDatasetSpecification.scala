@@ -4,6 +4,8 @@ import org.specs.Specification
 import org.specs.runner.JUnit4
 import java.lang.String
 import java.sql._
+import resource._
+import JdbcExecutor._
 
 /**
  * @author agustafson
@@ -13,28 +15,29 @@ class JdbcInputDatasetTest extends JUnit4(JdbcInputDatasetSpecification)
 object JdbcInputDatasetSpecification extends Specification {
   val databaseName: String = "jdbcTest";
   val baseConnectionUrl: String = "jdbc:derby:" + databaseName
-  val jdbcExecutor = new JdbcExecutor(baseConnectionUrl + ";create=true")
+  val connectionUrl = baseConnectionUrl + ";create=true"
+  implicit val connection = DriverManager.getConnection(connectionUrl)
 
   doBeforeSpec {
-    jdbcExecutor.executeUpdate("CREATE TABLE TEST (ID INT, DESCRIPTION VARCHAR(255))")
+    executeUpdate("CREATE TABLE TEST (ID INT, DESCRIPTION VARCHAR(255))")
   }
 
   doAfterSpec {
-    jdbcExecutor.ignore {
-      () => jdbcExecutor.executeUpdate("DROP TABLE TEST")
+    ignore {
+      () => executeUpdate("DROP TABLE TEST")
     }
-    jdbcExecutor.close
+    connection.close()
     // shutdown
-    var gotSQLExc = false;
+    var gotSqlException = false;
     try {
       DriverManager.getConnection("jdbc:derby:;shutdown=true");
     } catch {
       case se: SQLException =>
         if (se.getSQLState().equals("XJ015")) {
-          gotSQLExc = true;
+          gotSqlException = true;
         }
     }
-    if (!gotSQLExc) {
+    if (!gotSqlException) {
       System.out.println("Database did not shut down normally");
     }
   }
@@ -42,10 +45,14 @@ object JdbcInputDatasetSpecification extends Specification {
   "JdbcInputDataset" should {
     "extract a simple dataset" in {
       val insertSql = "INSERT INTO TEST (ID, DESCRIPTION) VALUES (?,?)"
-      jdbcExecutor.executeUpdate(insertSql, 1, "a")
-      jdbcExecutor.executeUpdate(insertSql, 2, "b")
-      jdbcExecutor.executeQuery("SELECT * FROM TEST") {
-        (resultSet: ResultSet) => {
+      managed(connection.prepareStatement(insertSql)) acquireAndGet {
+        preparedStatement: PreparedStatement => {
+          executeUpdate(preparedStatement, 1, "a")
+          executeUpdate(preparedStatement, 2, "b")
+        }
+      }
+      executeQuery("SELECT * FROM TEST") {
+        resultSet => {
           val jdbcInputDataset: JdbcInputDataset = new JdbcInputDataset(resultSet)
           val results = jdbcInputDataset.extractDataRows()
 

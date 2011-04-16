@@ -53,5 +53,11 @@
             <scope>test</scope>
             <classifier>tests</classifier>
         </dependency>
+        <dependency>
+            <groupId>com.github.jsuereth.scala-arm</groupId>
+            <artifactId>scala-arm_2.8.0</artifactId>
+            <version>0.2</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 </project>

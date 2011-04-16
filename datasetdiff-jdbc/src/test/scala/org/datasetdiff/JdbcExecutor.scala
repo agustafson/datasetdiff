@@ -1,31 +1,47 @@
 package org.datasetdiff
 
-import java.sql.{DriverManager, PreparedStatement, ResultSet}
+import resource._
+import java.sql.{Connection, PreparedStatement, ResultSet}
 
 /**
  * @author agustafson
  */
-class JdbcExecutor(connectionUrl: String) {
-  val connection = DriverManager.getConnection(connectionUrl)
-
-  def executeUpdate(sql: String, arguments: Any*): Int = {
-    val preparedStatement: PreparedStatement = prepareStatement(sql, arguments.toArray)
-    withStatement(preparedStatement, (statement: PreparedStatement) => {
-      statement.executeUpdate()
-    })
+object JdbcExecutor {
+  private def setArguments(preparedStatement: PreparedStatement, arguments: Any*) {
+    var argumentIndex = 1
+    for (argument <- arguments) {
+      preparedStatement.setObject(argumentIndex, argument)
+      argumentIndex += 1
+    }
   }
 
-  def executeQuery(sql: String, arguments: Any*)(resultSetHandler: ResultSet => Unit) {
-    val preparedStatement: PreparedStatement = prepareStatement(sql, arguments.toArray)
-    withStatement(preparedStatement, (statement: PreparedStatement) => {
-      val resultSet = statement.executeQuery()
-      resultSetHandler(resultSet)
-    })
+  def executeUpdate(preparedStatement: PreparedStatement, arguments: Any*): Int = {
+    setArguments(preparedStatement, arguments: _*)
+    preparedStatement.executeUpdate()
   }
 
-  def close() {
-    ignore {
-      connection.close
+  def executeUpdate(sql: String, arguments: Any*)(implicit connection: Connection): Int = {
+    managed(connection.prepareStatement(sql)) acquireAndGet {
+      preparedStatement => {
+        executeUpdate(preparedStatement, arguments: _*)
+      }
+    }
+  }
+
+  def executeQuery[T](preparedStatement: PreparedStatement, arguments: Any*)(resultSetHandler: ResultSet => T): T = {
+    setArguments(preparedStatement, arguments: _*)
+    managed(preparedStatement.executeQuery()) acquireAndGet {
+      resultSet => {
+        resultSetHandler(resultSet)
+      }
+    }
+  }
+
+  def executeQuery[T](sql: String, arguments: Any*)(resultSetHandler: ResultSet => T)(implicit connection: Connection): T = {
+    managed(connection.prepareStatement(sql)) acquireAndGet {
+      preparedStatement => {
+        executeQuery(preparedStatement, arguments: _*)(resultSetHandler)
+      }
     }
   }
 
@@ -37,24 +53,4 @@ class JdbcExecutor(connectionUrl: String) {
       case _ => None
     }
   }
-
-  private def withStatement[O](statement: PreparedStatement, f: (PreparedStatement) => O): O = {
-    try {
-      f(statement)
-    }
-    finally {
-      statement.close
-    }
-  }
-
-  private def prepareStatement(sql: String, arguments: Array[Any]): PreparedStatement = {
-    val preparedStatement = connection.prepareStatement(sql)
-    var argumentIndex = 1
-    for (argument <- arguments) {
-      preparedStatement.setObject(argumentIndex, argument)
-      argumentIndex += 1
-    }
-    preparedStatement
-  }
-
 }

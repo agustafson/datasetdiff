@@ -6,6 +6,7 @@ import java.util.Date
 import org.apache.poi.hssf.usermodel.HSSFCell
 import java.text.SimpleDateFormat
 import java.sql.{Timestamp, ResultSet, SQLException, DriverManager}
+import JdbcExecutor._
 
 class DatasetDiffSystemTest extends JUnit4(DatasetDiffSystemTest)
 
@@ -16,17 +17,18 @@ object DatasetDiffSystemTest extends Specification {
   val classLoader: ClassLoader = this.getClass.getClassLoader
   val databaseName: String = "jdbcTest";
   val baseConnectionUrl: String = "jdbc:derby:" + databaseName
-  val jdbcExecutor = new JdbcExecutor(baseConnectionUrl + ";create=true")
+  val connectionUrl = baseConnectionUrl + ";create=true"
+  implicit val connection = DriverManager.getConnection(connectionUrl)
 
   doBeforeSpec {
-    jdbcExecutor.executeUpdate("CREATE TABLE SIMPLE (COL_VARCHAR VARCHAR(1), COL_NUMBER REAL, COL_DATE TIMESTAMP)")
+    executeUpdate("CREATE TABLE SIMPLE (COL_VARCHAR VARCHAR(1), COL_NUMBER REAL, COL_DATE TIMESTAMP)")
   }
 
   doAfterSpec {
-    jdbcExecutor.ignore {
-      () => jdbcExecutor.executeUpdate("DROP TABLE SIMPLE")
+    ignore {
+      () => executeUpdate("DROP TABLE SIMPLE")
     }
-    jdbcExecutor.close
+    connection.close()
     // shutdown
     var gotSQLExc = false;
     try {
@@ -117,11 +119,11 @@ object DatasetDiffSystemTest extends Specification {
 
       val dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm")
       val insertSql = "INSERT INTO SIMPLE (COL_VARCHAR, COL_NUMBER, COL_DATE) VALUES (?,?,?)"
-      jdbcExecutor.executeUpdate(insertSql, "a", 1, new Timestamp(dateFormat.parse("24/12/2009 13:50").getTime))
-      jdbcExecutor.executeUpdate(insertSql, "b", 2.1, null)
-      jdbcExecutor.executeUpdate(insertSql, "c", 3.0, new Timestamp(dateFormat.parse("30/11/2008 02:32").getTime))
-      jdbcExecutor.executeQuery("SELECT * FROM SIMPLE") {
-        (resultSet: ResultSet) => {
+      executeUpdate(insertSql, "a", 1, new Timestamp(dateFormat.parse("24/12/2009 13:50").getTime))
+      executeUpdate(insertSql, "b", 2.1, null)
+      executeUpdate(insertSql, "c", 3.0, new Timestamp(dateFormat.parse("30/11/2008 02:32").getTime))
+      executeQuery("SELECT * FROM SIMPLE") {
+        resultSet: ResultSet => {
           val simpleDbTableDataset = new JdbcInputDataset(resultSet)
 
           val stringTextConverter: (String) => String = TextColumnConverters.StringConverter()
