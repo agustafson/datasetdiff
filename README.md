@@ -1,4 +1,10 @@
-General procedure
+Reasons
+=============
+I was looking for a java library (or scala) which could compare 2 datasets, whether the data is in
+excel or a delimited text file. Finding nothing, I decided to write a library myself.
+SQL ResultSet support as an InputDataset has also been added.
+
+Usage
 =================
 * Create 2 InputDatasets from an excel file, delimited text file or SQL ResultSet</li>
 * Create ColumnComparators to compare columns from each InputDataset.
