@@ -6,9 +6,33 @@
 
     <groupId>datasetdiff</groupId>
     <artifactId>datasetdiff-parent</artifactId>
-    <name>${project.artifactId}</name>
     <version>1.0</version>
     <packaging>pom</packaging>
+    <name>${project.artifactId}</name>
+    <description>Library for comparing 2 datasets</description>
+
+    <url>https://github.com/agustafson/datasetdiff</url>
+
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>Andrew Gustafson</name>
+            <id>agustafson</id>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:git://github.com/agustafson/datasetdiff.git</connection>
+        <developerConnection>scm:git:git@github.com:agustafson/datasetdiff.git</developerConnection>
+        <url>http://github.com/agustafson/datasetdiff/tree/master</url>
+    </scm>
 
     <properties>
         <scala.version>2.8.1</scala.version>
@@ -18,12 +42,6 @@
         <specs.artifactId>specs_${scala.version}</specs.artifactId>
         <maven.scala.plugin.version>2.15.0</maven.scala.plugin.version>
     </properties>
-
-    <scm>
-        <connection>scm:git:git://github.com/agustafson/datasetdiff.git</connection>
-        <developerConnection>scm:git:git@github.com:agustafson/datasetdiff.git</developerConnection>
-        <url>http://github.com/agustafson/datasetdiff/tree/master</url>
-    </scm>
 
     <repositories>
         <repository>
