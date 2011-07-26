@@ -21,15 +21,15 @@ extends ColumnComparator[L, R]
     val comparisonResult: ComparisonResult = (leftConvertedOption,rightConvertedOption) match {
       case (Some(SuccessfulConversionResult(leftConvertedValue)),Some(SuccessfulConversionResult(rightConvertedValue))) => {
         if (areEqual(leftConvertedValue, rightConvertedValue)) {
-          new MatchedComparisonResult()
+          MatchedComparisonResult
         } else {
-          new UnmatchedComparisonResult(leftConvertedOption, rightConvertedOption)
+          UnmatchedComparisonResult(leftConvertedOption, rightConvertedOption)
         }
       }
       case (None, None) =>
-        new MatchedComparisonResult()
+        MatchedComparisonResult
       case _ =>
-        new UnmatchedComparisonResult(leftConvertedOption, rightConvertedOption)
+        UnmatchedComparisonResult(leftConvertedOption, rightConvertedOption)
     }
     comparisonResult
   }

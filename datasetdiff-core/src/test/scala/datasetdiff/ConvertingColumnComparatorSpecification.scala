@@ -13,16 +13,31 @@ class ConvertingColumnComparatorTest extends JUnit4(ConvertingColumnComparatorSp
 
 object ConvertingColumnComparatorSpecification extends Specification {
   "ConvertingColumnComparator" should {
-    "compare 2 vals" in {
-      val string2IntConverter: (String) => Int = (cell: String) => (Integer.parseInt(cell))
+    val string2IntConverter: (String) => Int = (cell: String) => (Integer.parseInt(cell))
+    val columnComparator: ConvertingColumnComparator[Int, String, String] =
+      new ConvertingColumnComparator[Int, String, String](string2IntConverter, string2IntConverter)
 
-      val columnComparator: ConvertingColumnComparator[Int, String, String] =
-        new ConvertingColumnComparator[Int, String, String](string2IntConverter, string2IntConverter)
-
-      columnComparator.compareColumn(Some("3"), Some("3")) must haveClass[MatchedComparisonResult]
-      columnComparator.compareColumn(None, None) must haveClass[MatchedComparisonResult]
-      columnComparator.compareColumn(Some("3"), Some("2")) must haveClass[UnmatchedComparisonResult[_]]
-      columnComparator.compareColumn(Some("3"), None) must haveClass[UnmatchedComparisonResult[_]]
+    "compare 2 same values" in {
+      columnComparator.compareColumn(Some("3"), Some("3")) must_== MatchedComparisonResult
+      columnComparator.compareColumn(None, None) must_== MatchedComparisonResult
     }
+
+    /*
+    // TODO: uncomment test: compare 2 different values
+    "compare 2 different values" in {
+      columnComparator.compareColumn(Some("3"), Some("2")) mustBe (
+        UnmatchedComparisonResult(Some(SuccessfulConversionResult("3")), Some(SuccessfulConversionResult("2")))
+      )
+    }
+    */
+
+    /*
+    // TODO: uncomment test: compare a value with nothing
+    "compare a value with nothing" in {
+      columnComparator.compareColumn(Some("3"), None) mustBe (
+        UnmatchedComparisonResult(Some(SuccessfulConversionResult("3")), None)
+      )
+    }
+    */
   }
 }

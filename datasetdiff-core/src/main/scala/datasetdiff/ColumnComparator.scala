@@ -24,9 +24,9 @@ object ColumnComparator {
       val areEqual: Boolean = Ordering.Option[String].equiv(leftConvertedValue, rightConvertedValue)
       val comparisonResult: ComparisonResult =
         if (areEqual) {
-          new MatchedComparisonResult()
+          MatchedComparisonResult
         } else {
-          new UnmatchedComparisonResult(leftConvertedValue, rightConvertedValue)
+          UnmatchedComparisonResult(leftConvertedValue, rightConvertedValue)
         }
       comparisonResult
     }

@@ -7,5 +7,5 @@ package datasetdiff
  */
 trait InputDataset[+C]
 {
-  def extractDataRows(): Iterator[Seq[C]]
+  def extractDataRows(): Seq[Seq[C]]
 }

@@ -40,7 +40,7 @@ object DatasetDiffSystemTest extends Specification {
         }
     }
     if (!gotSQLExc) {
-      System.out.println("Database did not shut down normally");
+      println("Database did not shut down normally");
     }
   }
 
@@ -71,11 +71,8 @@ object DatasetDiffSystemTest extends Specification {
 
       val datasetDiff = new DatasetDiff[String, String](columnComparators)
 
-      val comparisons: List[Array[ComparisonResult]] = datasetDiff.compareDatasets(textFile1, textFile2)
-      comparisons.length mustBe 3
-      for (rowComparison <- comparisons; cellComparison <- rowComparison) {
-        cellComparison must(haveClass[MatchedComparisonResult])
-      }
+      val comparisons = datasetDiff.compareDatasets(textFile1, textFile2)
+      comparisons must beEmpty
     }
 
     "compare a simple text and excel file successfully" in {
@@ -106,11 +103,8 @@ object DatasetDiffSystemTest extends Specification {
 
       val datasetDiff = new DatasetDiff[String, HSSFCell](columnComparators)
 
-      val comparisons: List[Array[ComparisonResult]] = datasetDiff.compareDatasets(textFile, excelFile)
-      comparisons.length mustBe 3
-      for (rowComparison <- comparisons; cellComparison <- rowComparison) {
-        cellComparison must(haveClass[MatchedComparisonResult])
-      }
+      val comparisons = datasetDiff.compareDatasets(textFile, excelFile)
+      comparisons must beEmpty
     }
 
     "compare a simple text file and database table" in {
@@ -148,11 +142,8 @@ object DatasetDiffSystemTest extends Specification {
 
           val datasetDiff = new DatasetDiff[String, AnyRef](columnComparators)
 
-          val comparisons: List[Array[ComparisonResult]] = datasetDiff.compareDatasets(textFileDataset, simpleDbTableDataset)
-          comparisons.length mustBe 3
-          for (rowComparison <- comparisons; cellComparison <- rowComparison) {
-            cellComparison must(haveClass[MatchedComparisonResult])
-          }
+          val comparisons = datasetDiff.compareDatasets(textFileDataset, simpleDbTableDataset)
+          comparisons must beEmpty
         }
       }
     }

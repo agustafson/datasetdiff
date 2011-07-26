@@ -9,7 +9,7 @@ class JdbcInputDataset(private val resultSet: ResultSet) extends InputDataset[An
   val resultSetMetaData: ResultSetMetaData = resultSet.getMetaData
   val columnCount: Int = resultSetMetaData.getColumnCount
 
-  def extractDataRows(): Iterator[Seq[AnyRef]] = {
+  def extractDataRows(): Seq[Seq[AnyRef]] = {
     new Iterator[Seq[AnyRef]] {
       var hasTakenNext = false;
       var hasNextCached = false;
@@ -33,6 +33,6 @@ class JdbcInputDataset(private val resultSet: ResultSet) extends InputDataset[An
         }
         return hasNextCached;
       }
-    }
+    }.toSeq
   }
 }

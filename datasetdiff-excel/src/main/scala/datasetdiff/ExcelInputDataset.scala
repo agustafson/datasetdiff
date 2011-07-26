@@ -15,7 +15,7 @@ protected abstract class ExcelInputDataset(private val inputStream: InputStream)
   private lazy val workbook: HSSFWorkbook = new HSSFWorkbook(inputStream)
   private lazy val worksheet = sheet(workbook);
 
-  def extractDataRows(): Iterator[Seq[HSSFCell]] = {
+  def extractDataRows(): Seq[Seq[HSSFCell]] = {
     val rowBuffer = new ListBuffer[Seq[HSSFCell]]()
 
     for (val rowIndex <- getFirstRowNumber() to getLastRowNum();
@@ -25,7 +25,7 @@ protected abstract class ExcelInputDataset(private val inputStream: InputStream)
         yield cell.asInstanceOf[HSSFCell]
       rowBuffer += row.toSeq
     }
-    rowBuffer.toIterator
+    rowBuffer.toSeq
   }
 
   protected def sheet(workbook: HSSFWorkbook): HSSFSheet

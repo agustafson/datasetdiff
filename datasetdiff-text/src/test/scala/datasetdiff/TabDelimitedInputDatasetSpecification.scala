@@ -17,7 +17,7 @@ object TabDelimitedInputDatasetSpecification extends Specification {
       val input: String = "a\tb\tc\n" + "d\te\tf"
       val inputStream: ByteArrayInputStream = new ByteArrayInputStream(input.getBytes())
       val inputDataset: TabDelimitedInputDataset = new TabDelimitedInputDataset(inputStream)
-      val rows: Iterator[Seq[String]] = inputDataset.extractDataRows
+      val rows = inputDataset.extractDataRows
       val expectedRows = List[Seq[String]](
         Seq("a","b","c"),
         Seq("d","e","f")

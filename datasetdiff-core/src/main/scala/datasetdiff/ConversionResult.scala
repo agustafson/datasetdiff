@@ -6,13 +6,13 @@ package datasetdiff
  * @author agustafson
  */
 sealed abstract class ConversionResult[+T] {
-  def isConverted(): Boolean
+  def isConverted: Boolean
 }
 
 case class SuccessfulConversionResult[+T](convertedValue: T) extends ConversionResult[T] {
-  def isConverted(): Boolean = true
+  def isConverted: Boolean = true
 }
 
 case class FailedConversionResult(unconvertedValue: Any, exception: Throwable) extends ConversionResult[Nothing] {
-  def isConverted(): Boolean = false
+  def isConverted: Boolean = false
 }

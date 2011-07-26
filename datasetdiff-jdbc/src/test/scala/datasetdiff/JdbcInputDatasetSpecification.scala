@@ -38,7 +38,7 @@ object JdbcInputDatasetSpecification extends Specification {
         }
     }
     if (!gotSqlException) {
-      System.out.println("Database did not shut down normally");
+      println("Database did not shut down normally");
     }
   }
 

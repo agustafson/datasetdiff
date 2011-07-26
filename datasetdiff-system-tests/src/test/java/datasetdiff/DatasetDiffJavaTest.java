@@ -1,6 +1,7 @@
 package datasetdiff;
 
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -10,6 +11,8 @@ import org.junit.Test;
 
 import scala.Function1;
 import scala.math.BigDecimal;
+
+import static org.hamcrest.Matchers.equalTo;
 
 /**
  * Test to check compatibility from java.
@@ -60,17 +63,12 @@ public class DatasetDiffJavaTest {
         ConvertingColumnComparator<Date, String, String> dateColumnComparator =
                 new ConvertingColumnComparator<Date, String, String>(dateConverterDDMMYYYY, dateConverterYYYYMMDD, dateComparator);
 
-        List<ComparisonResult[]> comparisons = new DatasetDiffBuilder<String, String>()
+        List<DiffResult> comparisons = new DatasetDiffBuilder<String, String>()
                 .withColumnComparator(0, stringColumnComparator)
                 .withColumnComparator(1, numberColumnComparator)
                 .withColumnComparator(2, dateColumnComparator)
                 .compare(textFile1, textFile2);
 
-        Assert.assertEquals("comparison length", 3, comparisons.size());
-        for (ComparisonResult[] rowComparison : comparisons) {
-            for (ComparisonResult comparisonResult : rowComparison) {
-                Assert.assertThat(comparisonResult, CoreMatchers.instanceOf(MatchedComparisonResult.class));
-            }
-        }
+        Assert.assertThat("comparison", comparisons, equalTo(Collections.<DiffResult>emptyList()));
     }
 }

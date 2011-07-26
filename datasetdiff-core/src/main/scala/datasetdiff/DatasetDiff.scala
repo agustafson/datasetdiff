@@ -1,41 +1,45 @@
 package datasetdiff
 
-import collection.mutable.ListBuffer
+import collection.immutable.Map
+import java.lang.Math
 
 /**
  * @author agustafson
  */
-class DatasetDiff[L,R](columnComparators: Map[Int, ColumnComparator[L,R]], defaultColumnComparator: ColumnComparator[L,R]) {
+class DatasetDiff[L, R](columnComparators: Map[Int, ColumnComparator[L, R]], defaultColumnComparator: ColumnComparator[L, R]) {
 
-  def this(columnComparators: Map[Int, ColumnComparator[L,R]]) = {
-    this(columnComparators, ColumnComparator.defaultComparator[L,R]())
+  def this(columnComparators: Map[Int, ColumnComparator[L, R]]) = {
+    this (columnComparators, ColumnComparator.defaultComparator[L, R]())
   }
 
-  def compareDatasets[DL <: InputDataset[L], DR <: InputDataset[R]](leftDataset: DL, rightDataset: DR): List[Array[ComparisonResult]] = {
-    val leftRows: Iterator[Seq[L]] = leftDataset.extractDataRows()
-    val rightRows: Iterator[Seq[R]] = rightDataset.extractDataRows()
+  def compareDatasets[DL <: InputDataset[L], DR <: InputDataset[R]](leftDataset: DL, rightDataset: DR): List[DiffResult] = {
+    val leftRows: Seq[Seq[L]] = leftDataset.extractDataRows()
+    val rightRows: Seq[Seq[R]] = rightDataset.extractDataRows()
 
-    val rowComparisonResults = new ListBuffer[Array[ComparisonResult]]()
-
-    // scroll through each of the rows from both sources
-    while (leftRows.hasNext || rightRows.hasNext) {
-      val leftRow: Seq[L] = leftRows.next()
-      val rightRow: Seq[R] = rightRows.next()
-
-      val numberOfColumns: Int = scala.math.max(leftRow.size, rightRow.size)
-      val rowComparison = Array.ofDim[ComparisonResult](numberOfColumns)
-      for (columnNumber <- 0 until numberOfColumns) {
-        val leftCell: Option[L] = leftRow.lift(columnNumber)
-        val rightCell: Option[R] = rightRow.lift(columnNumber)
-
-        val columnComparator: ColumnComparator[L,R] = columnComparators.getOrElse(columnNumber, defaultColumnComparator)
-        val comparisonResult: ComparisonResult = columnComparator.compareColumn(leftCell, rightCell)
-
-        rowComparison.update(columnNumber, comparisonResult)
+    val columnDiff: Diff[L, R] = new Diff[L, R]() {
+      override def compareValue(leftValue: Option[L], rightValue: Option[R], leftIndex: Int, rightIndex: Int): Boolean = {
+        val columnNumber = Math.min(leftIndex, rightIndex)
+        val columnComparator: ColumnComparator[L, R] = columnComparators.getOrElse(columnNumber, defaultColumnComparator)
+        val comparisonResult: ComparisonResult = columnComparator.compareColumn(leftValue, rightValue)
+        comparisonResult.isMatched
       }
-
-      rowComparisonResults += rowComparison
     }
-    return rowComparisonResults.toList
+    val diff: Diff[Seq[L], Seq[R]] = new Diff[Seq[L], Seq[R]]() {
+      override def compareValue(leftRow: Option[Seq[L]], rightRow: Option[Seq[R]], leftRowNumber: Int, rightRowNumber: Int): Boolean = {
+        val leftValues: Seq[L] = leftRow.getOrElse(Seq.empty)
+        val rightValues: Seq[R] = rightRow.getOrElse(Seq.empty)
+        val columnCount: Int = Math.max(leftValues.size, rightValues.size)
+        for (columnIndex <- 0 until columnCount) {
+          val leftColumn: Option[L] = leftValues.lift(columnIndex);
+          val rightColumn: Option[R] = rightValues.lift(columnIndex);
+          val columnComparison: Boolean = columnDiff.compareValue(leftColumn, rightColumn, columnIndex, columnIndex)
+          if (!columnComparison) {
+            return false
+          }
+        }
+        return true
+      }
+    }
+    return diff.difference(leftRows.toArray, rightRows.toArray)
   }
 }
