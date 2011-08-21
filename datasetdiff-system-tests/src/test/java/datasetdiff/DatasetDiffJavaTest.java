@@ -43,7 +43,7 @@ public class DatasetDiffJavaTest {
         ComparatorFunction<BigDecimal> bigDecimalComparator = new ComparatorFunction<BigDecimal>() {
             @Override
             public boolean compare(BigDecimal left, BigDecimal right) {
-                return left.underlying().subtract(right.underlying()).abs()
+                return left.underlying().abs().subtract(right.underlying()).abs()
                         .subtract(new java.math.BigDecimal("0.0000001"))
                         .compareTo(java.math.BigDecimal.ZERO) <= 0;
             }
