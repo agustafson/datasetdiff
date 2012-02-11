@@ -21,7 +21,7 @@ class DateMatcher(datePattern: String, date: Date) extends TypeSafeMatcher[Date]
     formatLeft == formatRight
   }
 
-  def describeTo(description: Description): Unit = {
+  def describeTo(description: Description) {
     description.appendValue(date)
   }
 }
