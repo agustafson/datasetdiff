@@ -26,7 +26,7 @@ class JdbcInputDataset(private val resultSet: ResultSet) extends InputDataset[An
         }
       }
 
-      def hasNext(): Boolean = {
+      def hasNext: Boolean = {
         if (!hasTakenNext) {
           hasNextCached = resultSet.next();
           hasTakenNext = true;

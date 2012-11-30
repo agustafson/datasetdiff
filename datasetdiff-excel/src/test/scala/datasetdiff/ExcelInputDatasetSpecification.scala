@@ -22,7 +22,7 @@ object ExcelInputDatasetSpecification extends Specification {
       val inputStream = new ByteArrayInputStream(byteArrayOutputStream.toByteArray)
 
       val inputDataset = ExcelInputDataset(inputStream, 0)
-      val rows: Seq[Seq[HSSFCell]] = inputDataset.extractDataRows
+      val rows: Seq[Seq[HSSFCell]] = inputDataset.extractDataRows()
       ExcelColumnConverter.String(rows(0)(0)) must_== "a"
     }
   }

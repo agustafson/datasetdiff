@@ -35,7 +35,7 @@ object DatasetDiffSystemTest extends Specification {
       DriverManager.getConnection("jdbc:derby:;shutdown=true");
     } catch {
       case se: SQLException =>
-        if (se.getSQLState().equals("XJ015")) {
+        if (se.getSQLState.equals("XJ015")) {
           gotSQLExc = true;
         }
     }

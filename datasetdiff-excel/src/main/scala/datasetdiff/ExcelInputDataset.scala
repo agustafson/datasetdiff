@@ -30,11 +30,11 @@ protected abstract class ExcelInputDataset(private val inputStream: InputStream)
 
   protected def sheet(workbook: HSSFWorkbook): HSSFSheet
 
-  protected def getFirstRowNumber(): Int = {
+  protected def getFirstRowNumber: Int = {
     worksheet.getFirstRowNum
   }
 
-  protected def getLastRowNum(): Int = {
+  protected def getLastRowNum: Int = {
     worksheet.getLastRowNum
   }
 }
