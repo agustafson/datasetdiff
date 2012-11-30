@@ -15,7 +15,7 @@ class DatasetDiffSystemTest extends JUnit4(DatasetDiffSystemTest)
  */
 object DatasetDiffSystemTest extends Specification {
   val classLoader: ClassLoader = this.getClass.getClassLoader
-  val databaseName: String = "jdbcTest";
+  val databaseName: String = "jdbcTest"
   val baseConnectionUrl: String = "jdbc:derby:" + databaseName
   val connectionUrl = baseConnectionUrl + ";create=true"
   implicit val connection = DriverManager.getConnection(connectionUrl)
@@ -30,17 +30,17 @@ object DatasetDiffSystemTest extends Specification {
     }
     connection.close()
     // shutdown
-    var gotSQLExc = false;
+    var gotSQLExc = false
     try {
-      DriverManager.getConnection("jdbc:derby:;shutdown=true");
+      DriverManager.getConnection("jdbc:derby:;shutdown=true")
     } catch {
       case se: SQLException =>
         if (se.getSQLState.equals("XJ015")) {
-          gotSQLExc = true;
+          gotSQLExc = true
         }
     }
     if (!gotSQLExc) {
-      println("Database did not shut down normally");
+      println("Database did not shut down normally")
     }
   }
 

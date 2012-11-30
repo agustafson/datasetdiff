@@ -7,7 +7,7 @@ import collection.mutable.ListBuffer
  */
 class Diff[L, R] {
   def difference(left: Array[L], right: Array[R]): List[DiffResult] = {
-    val longestCommonSequences: Array[Array[Int]] = getLongestCommonSequences(left, right);
+    val longestCommonSequences: Array[Array[Int]] = getLongestCommonSequences(left, right)
 
     val leftLength: Int = left.length
     val rightLength: Int = right.length
@@ -17,18 +17,18 @@ class Diff[L, R] {
     var rightIndex: Int = 0
     def addLeftDifference(leftValue: Option[L]) {
       differences += new DiffResult(leftIndex, DifferenceSide.LEFT, leftValue)
-      leftIndex += 1;
+      leftIndex += 1
     }
     def addRightDifference(rightValue: Option[R]) {
       differences += new DiffResult(rightIndex, DifferenceSide.RIGHT, rightValue)
-      rightIndex += 1;
+      rightIndex += 1
     }
     while (leftIndex < leftLength && rightIndex < rightLength) {
       val leftValue = left.lift(leftIndex)
       val rightValue = right.lift(rightIndex)
       if (compareValue(leftValue, rightValue, leftIndex, rightIndex)) {
-        leftIndex += 1;
-        rightIndex += 1;
+        leftIndex += 1
+        rightIndex += 1
       }
       else if (longestCommonSequences(leftIndex + 1)(rightIndex) >= longestCommonSequences(leftIndex)(rightIndex + 1)) {
         addLeftDifference(leftValue)

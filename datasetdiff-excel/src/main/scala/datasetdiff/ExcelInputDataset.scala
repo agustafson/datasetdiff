@@ -13,7 +13,7 @@ protected abstract class ExcelInputDataset(private val inputStream: InputStream)
   extends InputDataset[HSSFCell]
 {
   private lazy val workbook: HSSFWorkbook = new HSSFWorkbook(inputStream)
-  private lazy val worksheet = sheet(workbook);
+  private lazy val worksheet = sheet(workbook)
 
   def extractDataRows(): Seq[Seq[HSSFCell]] = {
     val rowBuffer = new ListBuffer[Seq[HSSFCell]]()

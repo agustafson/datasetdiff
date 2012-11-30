@@ -30,8 +30,8 @@ class DatasetDiff[L, R](columnComparators: Map[Int, ColumnComparator[L, R]], def
         val rightValues: Seq[R] = rightRow.getOrElse(Seq.empty)
         val columnCount: Int = Math.max(leftValues.size, rightValues.size)
         for (columnIndex <- 0 until columnCount) {
-          val leftColumn: Option[L] = leftValues.lift(columnIndex);
-          val rightColumn: Option[R] = rightValues.lift(columnIndex);
+          val leftColumn: Option[L] = leftValues.lift(columnIndex)
+          val rightColumn: Option[R] = rightValues.lift(columnIndex)
           val columnComparison: Boolean = columnDiff.compareValue(leftColumn, rightColumn, columnIndex, columnIndex)
           if (!columnComparison) {
             return false

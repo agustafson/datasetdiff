@@ -9,7 +9,7 @@ import scala.collection.JavaConversions._
  */
 class DatasetDiffBuilder[L,R] {
 
-  var columnComparators: collection.mutable.Map[Int, ColumnComparator[L,R]] = new collection.mutable.HashMap[Int, ColumnComparator[L,R]]();
+  var columnComparators: collection.mutable.Map[Int, ColumnComparator[L,R]] = new collection.mutable.HashMap[Int, ColumnComparator[L,R]]()
   var defaultColumnComparator: ColumnComparator[L,R] = ColumnComparator.defaultComparator[L,R]()
 
   /**

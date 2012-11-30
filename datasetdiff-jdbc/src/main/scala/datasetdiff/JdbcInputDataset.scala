@@ -11,14 +11,14 @@ class JdbcInputDataset(private val resultSet: ResultSet) extends InputDataset[An
 
   def extractDataRows(): Seq[Seq[AnyRef]] = {
     new Iterator[Seq[AnyRef]] {
-      var hasTakenNext = false;
-      var hasNextCached = false;
+      var hasTakenNext = false
+      var hasNextCached = false
 
       def next(): Seq[AnyRef] = {
         if (!hasTakenNext) {
-          resultSet.next();
+          resultSet.next()
         }
-        hasTakenNext = false;
+        hasTakenNext = false
 
         for (columnNumber <- 1 to columnCount)
         yield {
@@ -28,10 +28,10 @@ class JdbcInputDataset(private val resultSet: ResultSet) extends InputDataset[An
 
       def hasNext: Boolean = {
         if (!hasTakenNext) {
-          hasNextCached = resultSet.next();
-          hasTakenNext = true;
+          hasNextCached = resultSet.next()
+          hasTakenNext = true
         }
-        return hasNextCached;
+        return hasNextCached
       }
     }.toSeq
   }

@@ -13,7 +13,7 @@ import JdbcExecutor._
 class JdbcInputDatasetTest extends JUnit4(JdbcInputDatasetSpecification)
 
 object JdbcInputDatasetSpecification extends Specification {
-  val databaseName: String = "jdbcTest";
+  val databaseName: String = "jdbcTest"
   val baseConnectionUrl: String = "jdbc:derby:" + databaseName
   val connectionUrl = baseConnectionUrl + ";create=true"
   implicit val connection = DriverManager.getConnection(connectionUrl)
@@ -28,17 +28,17 @@ object JdbcInputDatasetSpecification extends Specification {
     }
     connection.close()
     // shutdown
-    var gotSqlException = false;
+    var gotSqlException = false
     try {
-      DriverManager.getConnection("jdbc:derby:;shutdown=true");
+      DriverManager.getConnection("jdbc:derby:;shutdown=true")
     } catch {
       case se: SQLException =>
         if (se.getSQLState.equals("XJ015")) {
-          gotSqlException = true;
+          gotSqlException = true
         }
     }
     if (!gotSqlException) {
-      println("Database did not shut down normally");
+      println("Database did not shut down normally")
     }
   }
 
