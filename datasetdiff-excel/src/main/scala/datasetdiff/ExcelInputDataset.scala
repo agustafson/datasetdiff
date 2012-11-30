@@ -1,10 +1,8 @@
 package datasetdiff
 
-import scala.collection.mutable.ListBuffer
-
 import java.io.InputStream
 import org.apache.poi.hssf.usermodel.{HSSFSheet, HSSFCell, HSSFWorkbook}
-import collection.JavaConversions.JIteratorWrapper
+import scala.collection.JavaConversions._
 
 /**
  * @author agustafson
@@ -15,26 +13,19 @@ protected abstract class ExcelInputDataset(private val inputStream: InputStream)
   private lazy val workbook: HSSFWorkbook = new HSSFWorkbook(inputStream)
   private lazy val worksheet = sheet(workbook)
 
-  def extractDataRows(): Seq[Seq[HSSFCell]] = {
-    val rowBuffer = new ListBuffer[Seq[HSSFCell]]()
-
-    for (val rowIndex <- getFirstRowNumber() to getLastRowNum();
-         val excelRow = worksheet.getRow(rowIndex)
-    ) {
-      val row = for (cell <- new JIteratorWrapper(excelRow.cellIterator))
-        yield cell.asInstanceOf[HSSFCell]
-      rowBuffer += row.toSeq
-    }
-    rowBuffer.toSeq
-  }
+  def extractDataRows(): Seq[Seq[HSSFCell]] =
+    for {
+      rowIndex <- firstRowNumber to lastRowNum
+      excelRow = worksheet.getRow(rowIndex)
+    } yield excelRow.map(_.asInstanceOf[HSSFCell]).toSeq
 
   protected def sheet(workbook: HSSFWorkbook): HSSFSheet
 
-  protected def getFirstRowNumber: Int = {
+  protected def firstRowNumber: Int = {
     worksheet.getFirstRowNum
   }
 
-  protected def getLastRowNum: Int = {
+  protected def lastRowNum: Int = {
     worksheet.getLastRowNum
   }
 }

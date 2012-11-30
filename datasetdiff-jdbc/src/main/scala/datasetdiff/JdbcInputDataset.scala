@@ -16,22 +16,19 @@ class JdbcInputDataset(private val resultSet: ResultSet) extends InputDataset[An
 
       def next(): Seq[AnyRef] = {
         if (!hasTakenNext) {
-          resultSet.next()
+          resultSet.next
         }
         hasTakenNext = false
 
-        for (columnNumber <- 1 to columnCount)
-        yield {
-          resultSet.getObject(columnNumber)
-        }
+        for (columnNumber <- 1 to columnCount) yield resultSet.getObject(columnNumber)
       }
 
       def hasNext: Boolean = {
         if (!hasTakenNext) {
-          hasNextCached = resultSet.next()
+          hasNextCached = resultSet.next
           hasTakenNext = true
         }
-        return hasNextCached
+        hasNextCached
       }
     }.toSeq
   }

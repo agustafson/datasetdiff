@@ -57,15 +57,14 @@ class Diff[L, R] {
   private def getLongestCommonSequences(left: Array[L], right: Array[R]): Array[Array[Int]] = {
     val leftLength: Int = left.length
     val rightLength: Int = right.length
-    val longestCommonSequences: Array[Array[Int]] = Array.fill(leftLength + 1, rightLength + 1)(0)
-    for (i <- (leftLength - 1) to 0 by -1;
-         j <- (rightLength - 1) to 0 by -1
-    ) {
-      val leftIndex: Int = i
-      val rightIndex: Int = j
-      val leftValue = left.lift(leftIndex)
-      val rightValue = right.lift(rightIndex)
-      val comparisonResult: Boolean = compareValue(leftValue, rightValue, leftIndex, rightIndex)
+    val longestCommonSequences = Array.fill(leftLength + 1, rightLength + 1)(0)
+    for {
+      leftIndex <- (leftLength - 1) to 0 by -1
+      rightIndex <- (rightLength - 1) to 0 by -1
+      leftValue = left.lift(leftIndex)
+      rightValue = right.lift(rightIndex)
+      comparisonResult: Boolean = compareValue(leftValue, rightValue, leftIndex, rightIndex)
+    } {
       longestCommonSequences(leftIndex)(rightIndex) =
         if (comparisonResult) {
           longestCommonSequences(leftIndex + 1)(rightIndex + 1) + 1
