@@ -50,7 +50,7 @@ object JdbcExecutor {
       Some(f())
     }
     catch {
-      case _ => None
+      case _: Throwable => None
     }
   }
 }

@@ -43,7 +43,7 @@ class ConvertingColumnComparator[T, L, R](convertLeft: (L => T), convertRight: (
       }
     }
     catch {
-      case exception => Some(FailedConversionResult(rawValue, exception))
+      case exception: Throwable => Some(FailedConversionResult(rawValue, exception))
     }
   }
 
