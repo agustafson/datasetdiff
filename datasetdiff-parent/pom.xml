@@ -6,7 +6,7 @@
 
     <groupId>datasetdiff</groupId>
     <artifactId>datasetdiff-parent</artifactId>
-    <version>1.0</version>
+    <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>${project.artifactId}</name>
     <description>Library for comparing 2 datasets</description>
