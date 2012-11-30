@@ -17,7 +17,7 @@ class DatasetDiffBuilder[L,R] {
    */
   def withColumnComparator(columnNumber: Int, columnComparator: ColumnComparator[L,R]): DatasetDiffBuilder[L,R] = {
     columnComparators.put(columnNumber, columnComparator)
-    return this
+    this
   }
 
   /**

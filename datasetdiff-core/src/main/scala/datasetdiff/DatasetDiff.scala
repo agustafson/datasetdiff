@@ -40,6 +40,6 @@ class DatasetDiff[L, R](columnComparators: Map[Int, ColumnComparator[L, R]], def
         return true
       }
     }
-    return diff.difference(leftRows.toArray, rightRows.toArray)
+    diff.difference(leftRows.toArray, rightRows.toArray)
   }
 }

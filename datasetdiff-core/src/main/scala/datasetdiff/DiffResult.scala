@@ -9,6 +9,6 @@ case class DiffResult(elementNumber: Int, side: DifferenceSide.Value, value: Opt
     if (result == 0) {
       result = this.side.compare(other.side)
     }
-    return result
+    result
   }
 }
