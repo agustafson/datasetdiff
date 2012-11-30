@@ -1,7 +1,6 @@
 package datasetdiff
 
 import collection.immutable.Map
-import java.lang.Math
 
 /**
  * @author agustafson
@@ -18,7 +17,7 @@ class DatasetDiff[L, R](columnComparators: Map[Int, ColumnComparator[L, R]], def
 
     val columnDiff: Diff[L, R] = new Diff[L, R]() {
       override def compareValue(leftValue: Option[L], rightValue: Option[R], leftIndex: Int, rightIndex: Int): Boolean = {
-        val columnNumber = Math.min(leftIndex, rightIndex)
+        val columnNumber = math.min(leftIndex, rightIndex)
         val columnComparator: ColumnComparator[L, R] = columnComparators.getOrElse(columnNumber, defaultColumnComparator)
         val comparisonResult: ComparisonResult = columnComparator.compareColumn(leftValue, rightValue)
         comparisonResult.isMatched
@@ -28,16 +27,12 @@ class DatasetDiff[L, R](columnComparators: Map[Int, ColumnComparator[L, R]], def
       override def compareValue(leftRow: Option[Seq[L]], rightRow: Option[Seq[R]], leftRowNumber: Int, rightRowNumber: Int): Boolean = {
         val leftValues: Seq[L] = leftRow.getOrElse(Seq.empty)
         val rightValues: Seq[R] = rightRow.getOrElse(Seq.empty)
-        val columnCount: Int = Math.max(leftValues.size, rightValues.size)
-        for (columnIndex <- 0 until columnCount) {
-          val leftColumn: Option[L] = leftValues.lift(columnIndex)
-          val rightColumn: Option[R] = rightValues.lift(columnIndex)
-          val columnComparison: Boolean = columnDiff.compareValue(leftColumn, rightColumn, columnIndex, columnIndex)
-          if (!columnComparison) {
-            return false
-          }
-        }
-        return true
+        val columnCount: Int = math.max(leftValues.size, rightValues.size)
+        (0 until columnCount).forall(columnIndex => {
+          val leftColumn = leftValues.lift(columnIndex)
+          val rightColumn = rightValues.lift(columnIndex)
+          columnDiff.compareValue(leftColumn, rightColumn, columnIndex, columnIndex)
+        })
       }
     }
     diff.difference(leftRows.toArray, rightRows.toArray)
