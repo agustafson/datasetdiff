@@ -9,12 +9,12 @@ class Diff[L, R] {
   def difference(left: Array[L], right: Array[R]): List[DiffResult] = {
     val longestCommonSequences: Array[Array[Int]] = getLongestCommonSequences(left, right)
 
-    val leftLength: Int = left.length
-    val rightLength: Int = right.length
+    val leftLength = left.length
+    val rightLength = right.length
     val differences = new ListBuffer[DiffResult]
 
-    var leftIndex: Int = 0
-    var rightIndex: Int = 0
+    var leftIndex = 0
+    var rightIndex = 0
     def addLeftDifference(leftValue: Option[L]) {
       differences += new DiffResult(leftIndex, DifferenceSide.LEFT, leftValue)
       leftIndex += 1
@@ -55,8 +55,8 @@ class Diff[L, R] {
   }
 
   private def getLongestCommonSequences(left: Array[L], right: Array[R]): Array[Array[Int]] = {
-    val leftLength: Int = left.length
-    val rightLength: Int = right.length
+    val leftLength = left.length
+    val rightLength = right.length
     val longestCommonSequences = Array.fill(leftLength + 1, rightLength + 1)(0)
     for {
       leftIndex <- (leftLength - 1) to 0 by -1

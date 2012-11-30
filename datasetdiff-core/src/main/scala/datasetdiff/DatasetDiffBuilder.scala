@@ -24,8 +24,8 @@ class DatasetDiffBuilder[L, R] {
    * Compare the 2 datasets.
    */
   def compare[DL <: InputDataset[L], DR <: InputDataset[R]](leftDataset: DL, rightDataset: DR): java.util.List[DiffResult] = {
-    val datasetDiff: DatasetDiff[L, R] = new DatasetDiff[L, R](columnComparators.toMap, defaultColumnComparator)
-    val comparisonResults: List[DiffResult] = datasetDiff.compareDatasets[DL, DR](leftDataset, rightDataset)
+    val datasetDiff = new DatasetDiff[L, R](columnComparators.toMap, defaultColumnComparator)
+    val comparisonResults = datasetDiff.compareDatasets[DL, DR](leftDataset, rightDataset)
     asJavaList[DiffResult](comparisonResults)
   }
 }

@@ -15,8 +15,8 @@ class ConvertingColumnComparator[T, L, R](convertLeft: (L => T), convertRight: (
   }
 
   def compareColumn(leftValue: Option[L], rightValue: Option[R]): ComparisonResult = {
-    val leftConvertedOption: Option[ConversionResult[T]] = convertValue(leftValue, convertLeft)
-    val rightConvertedOption: Option[ConversionResult[T]] = convertValue(rightValue, convertRight)
+    val leftConvertedOption = convertValue(leftValue, convertLeft)
+    val rightConvertedOption = convertValue(rightValue, convertRight)
 
     val comparisonResult: ComparisonResult = (leftConvertedOption, rightConvertedOption) match {
       case (Some(SuccessfulConversionResult(leftConvertedValue)), Some(SuccessfulConversionResult(rightConvertedValue))) => {
