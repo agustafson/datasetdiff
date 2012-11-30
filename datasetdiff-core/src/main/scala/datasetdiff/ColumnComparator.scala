@@ -5,7 +5,7 @@ package datasetdiff
  *
  * @author agustafson
  */
-trait ColumnComparator[L,R] {
+trait ColumnComparator[L, R] {
   /**
    * Compare left and right values and return a ComparisonResult
    */
@@ -16,7 +16,7 @@ object ColumnComparator {
   /**
    * Default comparator. Compares the toString value.
    */
-  def defaultComparator[L,R](): ColumnComparator[L,R] = new ColumnComparator[L,R]() {
+  def defaultComparator[L, R](): ColumnComparator[L, R] = new ColumnComparator[L, R]() {
     def compareColumn(leftValue: Option[L], rightValue: Option[R]): ComparisonResult = {
       val leftConvertedValue: Option[String] = leftValue.map(_.toString)
       val rightConvertedValue: Option[String] = rightValue.map(_.toString)

@@ -8,8 +8,8 @@ import java.io.InputStream
  * @author agustafson
  */
 abstract class AbstractTextInputDataset(private val inputStream: InputStream)
-  extends InputDataset[String]
-{
+  extends InputDataset[String] {
+
   lazy val extractDataRows: Seq[Seq[String]] = {
     val lineIterator = Source.fromInputStream(inputStream).getLines()
 

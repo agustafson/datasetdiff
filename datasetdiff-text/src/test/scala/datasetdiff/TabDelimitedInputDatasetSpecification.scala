@@ -19,8 +19,8 @@ object TabDelimitedInputDatasetSpecification extends Specification {
       val inputDataset: TabDelimitedInputDataset = new TabDelimitedInputDataset(inputStream)
       val rows = inputDataset.extractDataRows
       val expectedRows = List[Seq[String]](
-        Seq("a","b","c"),
-        Seq("d","e","f")
+        Seq("a", "b", "c"),
+        Seq("d", "e", "f")
       )
       rows.toList must haveSameElementsAs(expectedRows)
     }

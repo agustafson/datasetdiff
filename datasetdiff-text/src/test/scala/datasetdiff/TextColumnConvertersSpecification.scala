@@ -28,7 +28,7 @@ object TextColumnConvertersSpecification extends Specification with ScalaCheck {
       val booleanConverter = BooleanConverter()
       val booleanString = b.toString
       booleanConverter(booleanString.toLowerCase) == b &&
-      booleanConverter(booleanString.toUpperCase) == b
+        booleanConverter(booleanString.toUpperCase) == b
     }
   }
 

@@ -12,7 +12,7 @@ trait ExcelColumnConverter[O] extends ColumnConverter[HSSFCell, O]
 
 object ExcelColumnConverter {
   val Boolean: (HSSFCell => Boolean) = ((cell: HSSFCell) => cell.getBooleanCellValue)
-  
+
   val Date: (HSSFCell => Date) = ((cell: HSSFCell) => cell.getDateCellValue)
 
   val Number: (HSSFCell => BigDecimal) = ((cell: HSSFCell) => BigDecimal(cell.getNumericCellValue))

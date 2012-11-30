@@ -8,8 +8,8 @@ import scala.collection.JavaConversions._
  * @author agustafson
  */
 protected abstract class ExcelInputDataset(private val inputStream: InputStream)
-  extends InputDataset[HSSFCell]
-{
+  extends InputDataset[HSSFCell] {
+
   private lazy val workbook: HSSFWorkbook = new HSSFWorkbook(inputStream)
   private lazy val worksheet = sheet(workbook)
 
@@ -34,7 +34,7 @@ object ExcelInputDataset {
   def apply(inputStream: InputStream, sheetName: String) = new ExcelInputDataset(inputStream) {
     protected def sheet(workbook: HSSFWorkbook): HSSFSheet = workbook.getSheet(sheetName)
   }
-  
+
   def apply(inputStream: InputStream, sheetIndex: Int) = new ExcelInputDataset(inputStream) {
     protected def sheet(workbook: HSSFWorkbook): HSSFSheet = workbook.getSheetAt(sheetIndex)
   }

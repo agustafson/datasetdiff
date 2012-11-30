@@ -1,16 +1,14 @@
 package datasetdiff;
 
+import org.junit.Assert;
+import org.junit.Test;
+import scala.Function1;
+import scala.math.BigDecimal;
+
 import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-
-import org.hamcrest.CoreMatchers;
-import org.junit.Assert;
-import org.junit.Test;
-
-import scala.Function1;
-import scala.math.BigDecimal;
 
 import static org.hamcrest.Matchers.equalTo;
 

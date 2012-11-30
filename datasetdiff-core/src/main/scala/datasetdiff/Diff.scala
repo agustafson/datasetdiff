@@ -12,7 +12,7 @@ class Diff[L, R] {
     val leftLength: Int = left.length
     val rightLength: Int = right.length
     val differences = new ListBuffer[DiffResult]
-    
+
     var leftIndex: Int = 0
     var rightIndex: Int = 0
     def addLeftDifference(leftValue: Option[L]) {

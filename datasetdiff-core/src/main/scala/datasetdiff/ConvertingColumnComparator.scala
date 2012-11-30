@@ -4,8 +4,8 @@ package datasetdiff
  * @author agustafson
  */
 class ConvertingColumnComparator[T, L, R](convertLeft: (L => T), convertRight: (R => T), valueComparator: (T, T) => Boolean)
-extends ColumnComparator[L, R]
-{
+  extends ColumnComparator[L, R] {
+
   def this(convertLeft: (L => T), convertRight: (R => T))(implicit ord: Ordering[T]) = {
     this(convertLeft, convertRight, (leftRaw: T, rightRaw: T) => ord.compare(leftRaw, rightRaw) == 0)
   }
@@ -18,8 +18,8 @@ extends ColumnComparator[L, R]
     val leftConvertedOption: Option[ConversionResult[T]] = convertValue(leftValue, convertLeft)
     val rightConvertedOption: Option[ConversionResult[T]] = convertValue(rightValue, convertRight)
 
-    val comparisonResult: ComparisonResult = (leftConvertedOption,rightConvertedOption) match {
-      case (Some(SuccessfulConversionResult(leftConvertedValue)),Some(SuccessfulConversionResult(rightConvertedValue))) => {
+    val comparisonResult: ComparisonResult = (leftConvertedOption, rightConvertedOption) match {
+      case (Some(SuccessfulConversionResult(leftConvertedValue)), Some(SuccessfulConversionResult(rightConvertedValue))) => {
         if (areEqual(leftConvertedValue, rightConvertedValue)) {
           MatchedComparisonResult
         } else {

@@ -8,7 +8,7 @@ import collection.immutable.Map
 class DatasetDiff[L, R](columnComparators: Map[Int, ColumnComparator[L, R]], defaultColumnComparator: ColumnComparator[L, R]) {
 
   def this(columnComparators: Map[Int, ColumnComparator[L, R]]) = {
-    this (columnComparators, ColumnComparator.defaultComparator[L, R]())
+    this(columnComparators, ColumnComparator.defaultComparator[L, R]())
   }
 
   def compareDatasets[DL <: InputDataset[L], DR <: InputDataset[R]](leftDataset: DL, rightDataset: DR): List[DiffResult] = {
