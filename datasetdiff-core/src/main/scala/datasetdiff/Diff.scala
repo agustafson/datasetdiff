@@ -70,7 +70,7 @@ class Diff[L, R] {
           longestCommonSequences(leftIndex + 1)(rightIndex + 1) + 1
         }
         else {
-          Math.max(longestCommonSequences(leftIndex + 1)(rightIndex), longestCommonSequences(leftIndex)(rightIndex + 1))
+          math.max(longestCommonSequences(leftIndex + 1)(rightIndex), longestCommonSequences(leftIndex)(rightIndex + 1))
         }
     }
     longestCommonSequences
