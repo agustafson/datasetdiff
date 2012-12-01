@@ -13,7 +13,7 @@ object TextColumnConverters {
 
   def DateConverter(datePattern: String): (String => Date) = ((cell: String) => new SimpleDateFormat(datePattern).parse(cell))
 
-  def NumberConverter(): (String => BigDecimal) = ((cell: String) => BigDecimal.apply(cell))
+  def NumberConverter(): (String => BigDecimal) = ((cell: String) => BigDecimal(cell))
 
   def StringConverter(): (String => String) = ((cell: String) => cell)
 }
