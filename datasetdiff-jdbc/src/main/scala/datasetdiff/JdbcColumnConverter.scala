@@ -10,5 +10,5 @@ class JdbcColumnConverter[+T] extends ColumnConverter[AnyRef, T] {
 }
 
 object JdbcColumnConverters {
-  def NumberConverter(): (String => BigDecimal) = ((input: AnyRef) => BigDecimal.apply(input.toString))
+  def NumberConverter(): (String => BigDecimal) = ((input: AnyRef) => BigDecimal(input.toString))
 }
