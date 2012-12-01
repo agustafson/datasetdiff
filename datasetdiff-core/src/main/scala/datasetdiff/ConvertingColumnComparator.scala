@@ -36,7 +36,11 @@ class ConvertingColumnComparator[T, L, R](convertLeft: (L => T), convertRight: (
 
   private def convertValue[I](rawValue: Option[I], converter: I => T): Option[ConversionResult[T]] = {
     try {
-      rawValue.map(raw => SuccessfulConversionResult(converter(raw)))
+      if (rawValue.isDefined && rawValue.get != null) {
+        Some(SuccessfulConversionResult(converter(rawValue.get)))
+      } else {
+        None
+      }
     }
     catch {
       case exception: Throwable => Some(FailedConversionResult(rawValue, exception))
